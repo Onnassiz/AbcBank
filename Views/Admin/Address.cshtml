@@ -1,0 +1,38 @@
+﻿@model AbcBank.Models.Administrator
+@{
+    ViewBag.Title = "Admin Address";
+}
+
+<h2>Add Address for - @Model.FullName</h2><hr/>
+
+<p>
+  <a href="/Admin"><i class="fa  fa-arrow-circle-left"></i> Admin Home Page</a>
+</p>
+
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+      @TempData["Response"].ToString()
+    </div>
+}
+
+@using (Html.BeginForm("Address", "Admin", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form"}))
+{
+    <h4>Select Address form List or Click @Html.ActionLink("here", "Create", "Address", new {@id = Model.Id}) to create a new Address</h4><hr/>
+    
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddressId, Model.FirstName + "'s Address:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.DropDownList("AddressId", (IEnumerable<SelectListItem>) ViewBag.Address, new {@class = "selectpicker"})<br/>
+        @Html.ValidationMessageFor(m => m.MarritalStatus, "", new {@class = "text-danger"})
+      </div>
+    </div>
+
+    <div class="form-group">
+		<div class="col-md-offset-6 col-md-2">
+			<input type="submit" value="Save" class="btn btn-default form-control"/>
+		</div>
+	</div>
+}

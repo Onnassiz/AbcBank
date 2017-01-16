@@ -1,0 +1,166 @@
+@using Microsoft.AspNetCore.Identity
+@using AbcBank.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - Abc Bank</title>
+
+  <environment names="Development">
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap-select.css" />
+    <link rel="stylesheet" href="~/bootstrap/css/simple-sidebar.css" />
+    <link rel="stylesheet" href="~/css/guest.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+  </environment>
+  <environment names="Staging,Production">
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+  </environment>
+</head>
+<body>
+@if (SignInManager.IsSignedIn(User) && controllerName != "Account")
+{
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+            <a href="/" style="color: #00CAFB">
+              Abc Bank
+            </a>
+          </li>
+          <li>
+            @await Html.PartialAsync("_LoginPartial")
+          </li>
+          <li style="clear: both">
+            <hr class="intro-divider">
+          </li>
+          <li class="@if (controllerName == "Dashboard")
+                     {
+                         @Html.Raw("active")
+                     }">
+            @Html.ActionLink("Dashboard", "Index", "Dashboard")
+          </li>
+          <li class="@if (controllerName == "Roles")
+                     {
+                         @Html.Raw("active")
+                     }">
+            @Html.ActionLink("Roles", "Index", "Roles")
+          </li>
+          <li class="@if (controllerName == "Address")
+                     {
+                         @Html.Raw("active")
+                     }">
+            @Html.ActionLink("Address Book", "Index", "Address")
+          </li>
+          <li class="@if (controllerName == "Branch")
+                     {
+                         @Html.Raw("active")
+                     }">
+            @Html.ActionLink("Branch Management", "Index", "Branch")
+          </li>
+          <li class="@if (controllerName == "Admin")
+                     {
+                         @Html.Raw("active")
+                     }">
+            @Html.ActionLink("Staff and Admin Management", "Index", "Admin")
+          </li>
+        </ul>
+      </div>
+      <!-- /#sidebar-wrapper -->
+
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              @RenderBody()
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /#page-content-wrapper -->
+      <environment names="Development">
+        <script src="~/bootstrap/js/jquery.min.js"></script>
+        <script src="~/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/bootstrap/js/bootstrap-select.js"></script>
+        <script src="~/js/bootstrap-datepicker.min.js"></script>
+        <script src="~/js/site.js"></script>
+      </environment>
+      <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+      </environment>
+
+      @RenderSection("scripts", required: false)
+    </div>
+}
+else
+{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a asp-controller="Home" asp-action="Index" class="navbar-brand">Abc Bank</a>
+        </div>
+        <div class="navbar-collapse collapse">
+
+          @await Html.PartialAsync("_LoginPartial")
+        </div>
+      </div>
+    </div>
+    <div class="">
+      @RenderBody()
+      <footer>
+        @*            <p>&copy; 2016 - AbcBank</p>*@
+      </footer>
+    </div>
+
+    <environment names="Development">
+      <script src="~/bootstrap/js/jquery.min.js"></script>
+      <script src="~/bootstrap/js/bootstrap.min.js"></script>
+      <script src="~/bootstrap/js/bootstrap-select.js"></script>
+      <script src="~/js/site.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+      <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
+              asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+              asp-fallback-test="window.jQuery">
+      </script>
+      <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+              asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+              asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+      </script>
+      <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+}
+</body>
+</html>

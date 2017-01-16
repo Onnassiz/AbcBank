@@ -1,0 +1,31 @@
+@using Microsoft.AspNetCore.Identity
+@using AbcBank.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-controller="Manage" asp-action="Index" title="Manage" style="color: #fff">Hello @UserManager.GetUserName(User)</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link" style="color: #fff"><i class="fa fa-sign-out"></i> Log off</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+@*        <li><a asp-controller="Account" asp-action="Register">Register</a></li>*@
+        <li class="@if (controllerName == "Account")
+                   {
+                       @Html.Raw("active")
+                   }"><a asp-controller="Account" asp-action="Login">Log in</a></li>
+    </ul>
+}

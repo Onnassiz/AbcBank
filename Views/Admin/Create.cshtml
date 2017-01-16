@@ -1,0 +1,130 @@
+﻿@model AbcBank.Models.Administrator
+
+@{
+    ViewBag.Title = "Create Address";
+}
+
+<h2>Add Admin</h2><hr/>
+
+<p>
+  <a href="/Admin"><i class="fa  fa-arrow-circle-left"></i> Admin Home Page</a>
+</p>
+
+@using (Html.BeginForm("Create", "Admin", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form"}))
+{
+    <h3>Staff BioData and Info</h3><hr/>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+      </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MiddleName, "Middle Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MaidenName, "Maiden Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.MaidenName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MaidenName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, "Email:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Sex, "Sex:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9" style="margin-top: 5px">
+        @foreach (var item in ViewBag.Sex)
+        {
+            <input asp-for="Sex" type="radio" value="@item" /> @item <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        } <br/>
+        @Html.ValidationMessageFor(m => m.Sex, "", new {@class = "text-danger"})
+      </div>
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.DateOfBirth, "Date of Birth:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control dateOfBirth"})
+        @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
+      </div>
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.MarritalStatus, "Marrital Status:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9" style="margin-top: 5px">
+        @foreach (var item in ViewBag.MarritalStatus)
+        {
+            <input asp-for="MarritalStatus" type="radio" value="@item" /> @item <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        } <br/>
+        @Html.ValidationMessageFor(m => m.MarritalStatus, "", new {@class = "text-danger"})
+      </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.HireDate, "Hire Date:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.HireDate, new { @class = "form-control dateOfBirth" })
+            @Html.ValidationMessageFor(m => m.HireDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+      @Html.Label("Select Address", "Admin Type:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.DropDownList("AdminType")<br/>
+      </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BankBranchId, "Bank Branch:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.DropDownList("BankBranchId", (IEnumerable<SelectListItem>)ViewBag.Branch)
+        @Html.ValidationMessageFor(m => m.BankBranchId, "", new {@class = "text-danger"})
+      </div>
+    </div>
+
+
+    <div class="form-group">
+		<div class="col-md-offset-6 col-md-2">
+			<input type="submit" value="Add" class="btn btn-default form-control"/>
+		</div>
+	</div>
+}
+
+@section Scripts {
+  <script type="text/javascript">
+      $(document).ready(
+          function() {
+              $(".dateOfBirth").datepicker({
+                  format: 'yyyy-mm-dd',
+              });
+          }
+      );
+  </script>
+}

@@ -1,0 +1,345 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,800);
+/*!
+ * Start Bootstrap - Landing Page Bootstrap Theme (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+body,
+html {
+    width: 100%;
+    height: 100vh;
+}
+
+.page-body{
+    margin-top: 5%;
+    min-height: 80%;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Raleway', sans-serif;
+}
+
+.topnav {
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.downnav {
+    margin-bottom: 0px;
+    padding-top: 20px;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.lead {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.intro-message {
+    position: relative;
+    /*padding-top: 10%;*/
+    /*padding-bottom: 40%;*/
+}
+
+.intro-message > h1 {
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(70, 178, 251, 0.6);
+    font-size: 5em;
+}
+
+.intro-divider {
+    margin: 0px;
+    border-top: 1px solid #00CAFB;
+    border-bottom: 1px solid white;
+}
+.intro{
+    position: relative;
+}
+.intro > h2 {
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 3px rgba(7, 17, 10, 0.6);
+    font-size: 3em;
+}
+.intro > h3 {
+    text-align: center;
+    color: #110805;
+    text-shadow: 2px 2px 3px rgba(17, 8, 5, 0.6);
+    font-size: 2em;
+}
+.divider {
+    margin: 0px;
+    border-top: 1px solid #07110a;
+    border-bottom: 1px solid white;
+}
+.intro-divider-full {
+    border-top: 1px solid #00CAFB;
+    border-bottom: 1px solid white;
+}
+
+
+.intro-message > h3 {
+    text-shadow: 2px 2px 3px rgba(70, 178, 251, 0.6);
+}
+
+@media(max-width:767px) {
+    .intro-message {
+        padding-bottom: 15%;
+    }
+
+    .intro-message > h1 {
+        font-size: 3em;
+    }
+
+    ul.intro-social-buttons > li {
+        display: block;
+        margin-bottom: 20px;
+        padding: 0;
+    }
+
+    ul.intro-social-buttons > li:last-child {
+        margin-bottom: 0;
+    }
+
+    .intro-divider {
+        width: 100%;
+    }
+}
+
+.network-name {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.content-section-a {
+    padding: 50px 0;
+    background-color: #f8f8f8;
+}
+
+.content-section-b {
+    padding: 50px 0;
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.section-heading {
+    margin-bottom: 30px;
+}
+
+.section-heading-spacer {
+    float: left;
+    width: 200px;
+    border-top: 3px solid #e7e7e7;
+}
+
+.banner {
+    padding: 100px 0;
+    color: #f8f8f8;
+    background: url(../img/banner-bg.jpg) no-repeat center center;
+    background-size: cover;
+}
+
+.banner h2 {
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    font-size: 3em;
+}
+
+.banner ul {
+    margin-bottom: 0;
+}
+
+.banner-social-buttons {
+    float: right;
+    margin-top: 0;
+}
+
+@media(max-width:1199px) {
+    ul.banner-social-buttons {
+        float: left;
+        margin-top: 15px;
+    }
+}
+
+@media(max-width:767px) {
+    .banner h2 {
+        margin: 0;
+        text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+        font-size: 3em;
+    }
+
+    ul.banner-social-buttons > li {
+        display: block;
+        margin-bottom: 20px;
+        padding: 0;
+    }
+
+    ul.banner-social-buttons > li:last-child {
+        margin-bottom: 0;
+    }
+}
+
+footer {
+    padding: 50px 0;
+    background-color: #f8f8f8;
+}
+
+p.copyright {
+    margin: 15px 0 0;
+}
+
+.login-form{
+    text-align: left;
+    position: relative;
+    padding-top: 20%;
+    padding-bottom: 20%;
+}
+.form-control,
+.textarea-box {
+    background: transparent;
+    box-shadow: none;
+    color: #110805;
+    border: solid #00CAFB 1px;
+}
+
+.intro-header {
+    padding-top: 10px; /* If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! */
+    padding-bottom: 50px;
+    text-align: center;
+    color: rgba(17, 8, 5, 0.93);
+    background: url(../images/newsletter.jpg) no-repeat center center;
+    background-size: cover;
+}
+
+
+.btn {
+    /*width: 310px;*/
+    font-weight: 600;
+}
+
+#social {
+    background: #ecf0f1;
+    margin-top: 30px;
+}
+#social .social {
+    text-align: center;
+}
+#social .social li {
+    display: inline-block;
+}
+#social .social li a i {
+    border: 2px solid #00CAFB;
+    color: #00CAFB;
+    padding: 10px;
+    font-size: 18px;
+    line-height: 28px;
+    margin-right: 5px;
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+#social .social li a i:hover {
+    color: #fff;
+}
+#social .social .fa-facebook:hover {
+    background: #3b5998;
+    border: 2px solid #3b5998;
+}
+#social .social .fa-twitter:hover {
+    background: #00CAFB;
+    border: 2px solid #00CAFB;
+}
+#social .social .fa-google-plus:hover {
+    background: #D23A1D;
+    border: 2px solid #D23A1D;
+}
+#social .social .fa-linkedin:hover {
+    background: #007bb6;
+    border: 2px solid #007bb6;
+}
+#social .social .fa-pinterest:hover {
+    background: #008ED6;
+    border: 2px solid #008ED6;
+}
+
+
+#footer {
+    background: #353B47;
+}
+#footer p {
+    text-align: center;
+    color: #ffffff;
+    margin-top: 10px;
+    /*line-height: 60px;*/
+}
+#subscribe {
+    color: #ffffff;
+    background: #ecf0f1;
+    text-align: center;
+}
+#subscribe .section-subtitle {
+    color: #999;
+}
+a{
+    color: #00CAFB;
+}
+
+.panel{
+    height: 250px;
+    padding-top: 6%;
+    background-color: #00CAFB;
+}
+.fa-btn{
+    margin-right: 6px;
+}
+
+.menu-links{
+    font-size: 12px;
+}
+.profile-image{
+    width: 150px;
+    height: 150px;
+    float: left;
+    border-radius: 50%;
+    margin-right: 25px;
+}
+.profile-image-mini{
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 50%;
+}
+.btn-primary{
+    background-color: #00CAFB;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #00acee;
+}
+
+.body-h2{
+    font-weight: 500;
+    color: #00CAFB;
+}
+.body-h3{
+    color: rgba(0, 0, 0, 0.6);
+}

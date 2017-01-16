@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole>
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+<h2>Application Roles</h2>
+<h4>Add new roles and manage existing roles</h4> <hr/>
+
+
+<p>
+  @Html.ActionLink("Create Role", "Create", "Roles")
+</p>
+<p>
+  @Html.ActionLink("Assign Role to User", "RegisterRole", "Roles")
+</p>
+
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+      @TempData["Response"].ToString()
+    </div>
+}
+
+<table class="table table-hover">
+  <tr>
+    <th>Role Name</th>
+    <th>Action</th>
+  </tr>
+
+  @foreach (var item in Model)
+  {
+      <div class="modal fade" tabindex="-1" role="dialog" id="@item.Id">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete <b>@item.Name</b> from your role list?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button data="@item.Id" type="button" class="btn btn-primary continueDelete">Delete</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <tr>
+        <td>
+          @item.Name
+        </td>
+        <td>
+@*          @Html.ActionLink("Delete Role","Delete", "Roles", new {id = item.Id})*@
+           <a href="#" class="deleteRole" data="@item.Id">Delete Role</a>
+        </td>
+      </tr>
+  }
+</table>
+
+@section Scripts {
+  <script type="text/javascript">
+      $(document).ready(
+          function() {
+               $('.deleteRole').click(
+                function () {
+                    var id = $(this).attr('data');
+                    $('#'+id).modal({
+                        show: true
+                    });
+                });
+				$('.continueDelete').click(
+						function () {
+						    $(this).attr('disabled','disabled');
+							var id = $(this).attr('data');
+							window.location.replace('/Roles/Delete/'+id);
+						}
+				);
+          }
+      );
+  </script>
+}

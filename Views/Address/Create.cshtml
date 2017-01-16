@@ -1,0 +1,65 @@
+﻿@model AbcBank.Models.Address
+
+@{
+    ViewBag.Title = "Create Address";
+}
+
+<h2>Create New Address</h2><hr/>
+
+<p>
+  <a href="/Address"><i class="fa  fa-arrow-circle-left"></i> Address Book</a>
+</p>
+
+@using (Html.BeginForm("Create", "Address", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form" }))
+{
+    <h3>Create Address</h3><hr/>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.HouseNumber, "House Name/Number:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.HouseNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.HouseNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Street, "Street:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Street, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.Town, "Town:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.TextBoxFor(m => m.Town, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Town, "", new { @class = "text-danger" })
+      </div>
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.County, "County:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.TextBoxFor(m => m.County, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.County, "", new { @class = "text-danger" })
+      </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PostCode, "Post Code:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.PostCode, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PostCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+		<div class="col-md-offset-6 col-md-2">
+			<input type="submit" value="Create" class="btn btn-default form-control"/>
+		</div>
+	</div>
+}
+
