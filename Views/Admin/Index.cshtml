@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<AbcBank.Models.BranchIndexPage>*@
+﻿@model IEnumerable<AbcBank.Models.PersonJoinView>
 
 @{
     ViewBag.Title = "Branches";
@@ -16,6 +16,79 @@
     <div class="alert alert-success">
       @TempData["Response"].ToString()
     </div>
+}
+
+<table class="table table-hover">
+  <tr>
+    <th>Full Name</th>
+    <th>Email</th>
+    <th>Branch</th>
+    <th>Admin Type</th>
+    <th>Hire Date</th>
+    <th>Sex</th>
+    <th></th>
+  </tr>
+
+  @foreach (var item in Model)
+  {
+      <div class="modal fade" tabindex="-1" role="dialog" id="@item.Id">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+              <h5>Are you sure you want to delete  <b>@item.FullName</b> from the staff list?</h5>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button data="@item.Id" type="button" class="btn btn-primary continueDelete">Delete</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <tr>
+        <td>
+          @item.FullName
+        </td>
+        <td>
+          @item.Email
+        </td>
+        <td>@item.BranchName</td>
+        <td>@item.AdminType</td>
+        <td>@item.HireDate</td>
+        <td>@item.Sex</td>
+        <td>
+          <a href="/Admin/Edit/@item.Id" title="edit"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;|
+          <a href="#" class="deleteBrach" data="@item.Id" title="delete">&nbsp;<i class="fa fa-trash"></i></a>
+        </td>
+      </tr>
+  }
+</table>
+
+@section Scripts {
+  <script type="text/javascript">
+      $(document).ready(
+          function() {
+              $('.deleteBrach').click(
+                  function () {
+                      var id = $(this).attr('data');
+                      $('#'+id).modal({
+                          show: true
+                      });
+                  });
+              $('.continueDelete').click(
+                  function () {
+                      $(this).attr('disabled','disabled');
+                      var id = $(this).attr('data');
+                      window.location.replace('/Admin/Delete/'+id);
+                  }
+              );
+          }
+      );
+  </script>
 }
 
 
