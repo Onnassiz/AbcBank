@@ -37,6 +37,8 @@ namespace AbcBank.Models
                 .HasIndex(b => b.BranchName).IsUnique();
             modelBuilder.Entity<Person>()
                 .HasIndex(b => b.Email).IsUnique();
+            modelBuilder.Entity<Account>()
+                .HasIndex(b => b.AccountName).IsUnique();
             modelBuilder.Entity<BankBranch>()
                 .HasIndex(b => b.BranchName).IsUnique();
             modelBuilder.Entity<Person>()

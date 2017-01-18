@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using NuGet.Protocol.Core.v3;
 
 namespace AbcBank.Controllers
 {
@@ -281,6 +280,7 @@ namespace AbcBank.Controllers
                     (person, address) => new {person, address}).FirstOrDefault(x => x.person.person.Id == Id);
             var model = new PersonJoinView()
             {
+
                 Id = result.person.person.Id,
                 FullName = result.person.person.FullName,
                 Email = result.person.person.Email,
