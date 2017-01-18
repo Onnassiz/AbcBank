@@ -320,12 +320,17 @@ namespace AbcBank.Controllers
 
         //
         // GET: /Account/ResetPassword
+        public async Task<IActionResult> CreatePasswordFirst(string userId, string code = null)
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation(4, "User logged out.");
+            return RedirectToAction("CreatePassword", new {userId, code});
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> CreatePassword(string userId, string code = null)
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
             ViewBag.Email = _context.Users.Find(userId).Email;
             return code == null ? View("Error") : View();
         }

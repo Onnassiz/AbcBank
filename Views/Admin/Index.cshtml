@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AbcBank.Models.PersonJoinView>
 
 @{
-    ViewBag.Title = "Branches";
+    ViewBag.Title = "Administrators";
 }
 
 <h2>Staff and Admin Management</h2>
@@ -23,7 +23,6 @@
     <th>Full Name</th>
     <th>Email</th>
     <th>Branch</th>
-    <th>Admin Type</th>
     <th>Hire Date</th>
     <th>Sex</th>
     <th></th>
@@ -57,10 +56,10 @@
           @item.Email
         </td>
         <td>@item.BranchName</td>
-        <td>@item.AdminType</td>
-        <td>@item.HireDate</td>
+        <td>@item.HireDate.ToString("MMMM dd, yyyy")</td>
         <td>@item.Sex</td>
         <td>
+          <a href="/Admin/View/@item.Id" title="view"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;|
           <a href="/Admin/Edit/@item.Id" title="edit"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;|
           <a href="#" class="deleteBrach" data="@item.Id" title="delete">&nbsp;<i class="fa fa-trash"></i></a>
         </td>

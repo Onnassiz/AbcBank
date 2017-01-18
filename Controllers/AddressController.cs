@@ -38,6 +38,7 @@ namespace AbcBank.Controllers
                 address.DateUpdated = DateTime.Now;
                 address.ToString = ToString;
                 _context.Addresses.Add(address);
+
                 try
                 {
                     _context.SaveChanges();
@@ -51,6 +52,7 @@ namespace AbcBank.Controllers
                         return View();
                     }
                 }
+
                 if (Id != null)
                 {
                     Person person = _context.Persons.Find(Id);

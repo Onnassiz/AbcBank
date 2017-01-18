@@ -1,7 +1,7 @@
 ﻿@model AbcBank.Models.Administrator
 
 @{
-    ViewBag.Title = "Create Address";
+    ViewBag.Title = "Create Admin";
 }
 
 <h2>Add Admin</h2><hr/>
@@ -92,13 +92,6 @@
             @Html.TextBoxFor(m => m.HireDate, new { @class = "form-control dateOfBirth" })
             @Html.ValidationMessageFor(m => m.HireDate, "", new { @class = "text-danger" })
         </div>
-    </div>
-
-    <div class="form-group">
-      @Html.Label("Select Address", "Admin Type:", new { @class = "col-md-3 control-label" })
-      <div class="col-md-9">
-        @Html.DropDownList("AdminType")<br/>
-      </div>
     </div>
 
     <div class="form-group">

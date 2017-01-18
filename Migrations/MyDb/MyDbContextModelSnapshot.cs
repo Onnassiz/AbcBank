@@ -128,7 +128,7 @@ namespace AbcBank.Migrations.MyDb
                 {
                     b.HasBaseType("AbcBank.Models.Person");
 
-                    b.Property<string>("AdminType");
+                    b.Property<int>("CustomerCount");
 
                     b.Property<DateTime>("HireDate");
 
@@ -142,8 +142,6 @@ namespace AbcBank.Migrations.MyDb
                     b.HasBaseType("AbcBank.Models.Person");
 
                     b.Property<string>("BankerId");
-
-                    b.Property<string>("TellerId");
 
                     b.ToTable("Customer");
 

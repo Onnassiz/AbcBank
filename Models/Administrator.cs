@@ -6,6 +6,6 @@ namespace AbcBank.Models
     {
         public DateTime HireDate { get; set; }
 
-        public string AdminType { get; set; }
+        public int CustomerCount { get; set; }
     }
 }

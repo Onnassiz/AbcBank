@@ -7,7 +7,6 @@ using AbcBank.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -34,7 +33,7 @@ namespace AbcBank.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string Type)
+        public async Task<IActionResult> Index()
         {
             var result = _context.Persons.OfType<Administrator>().Join(_context.BankBranches,
                     x => x.BankBranchId, d => d.Id,
@@ -53,7 +52,6 @@ namespace AbcBank.Controllers
                     Id = item.person.Id,
                     FullName = item.person.FullName,
                     Email = item.person.Email,
-                    AdminType = item.person.AdminType,
                     Sex = item.person.Sex,
                     HireDate = item.person.HireDate,
                     BranchName = item.branch.BranchName
@@ -68,13 +66,12 @@ namespace AbcBank.Controllers
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
 
-            List<SelectListItem> AdminType = new List<SelectListItem>();
-            AdminType.Add(new SelectListItem {Text = "Banker", Value = "Banker"});
-            AdminType.Add(new SelectListItem {Text = "Teller", Value = "Teller", Selected = true});
+//            List<SelectListItem> AdminType = new List<SelectListItem>();
+//            AdminType.Add(new SelectListItem {Text = "Banker", Value = "Banker"});
+//            AdminType.Add(new SelectListItem {Text = "Teller", Value = "Teller", Selected = true});
 
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
 
-            ViewBag.AdminType = AdminType;
             ViewBag.Branch = Branch;
 
             return View();
@@ -85,22 +82,20 @@ namespace AbcBank.Controllers
         {
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-
-            List<SelectListItem> AdminType = new List<SelectListItem>();
-            AdminType.Add(new SelectListItem {Text = "Banker", Value = "Banker"});
-            AdminType.Add(new SelectListItem {Text = "Teller", Value = "Teller", Selected = true});
-            ViewBag.AdminType = AdminType;
+            var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
+            ViewBag.Branch = Branch;
 
             if (ModelState.IsValid)
             {
                 administrator.DateCreated = DateTime.Now;
                 administrator.DateUpdated = DateTime.Now;
+                administrator.CustomerCount = 0;
                 _context.Persons.Add(administrator);
                 try
                 {
                     _context.SaveChanges();
                     await CreateAccount(administrator.Email);
-                    await SetRole(administrator.Email, administrator.AdminType);
+                    await SetRole(administrator.Email, "Banker");
                     await SendAuthMail(administrator.Email, administrator.FullName);
                 }
                 catch (DbUpdateException ex)
@@ -142,6 +137,79 @@ namespace AbcBank.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Delete(string Id)
+        {
+            var user = _context.Persons.Find(Id);
+            var User = await _userManager.FindByNameAsync(user.Email);
+            await _userManager.DeleteAsync(User);
+            _context.Persons.Remove(user);
+            _context.SaveChanges();
+            TempData["Response"] = "Admin Record Successfully Deleted";
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(string Id)
+        {
+            ViewBag.Sex = new List<string> {"Male", "Female"};
+            ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+
+            var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
+
+            ViewBag.Branch = Branch;
+
+            return View(_context.Persons.Find(Id));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(string Id, Administrator administrator)
+        {
+            ViewBag.Sex = new List<string> {"Male", "Female"};
+            ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+
+            var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
+
+            if (ModelState.IsValid)
+            {
+                ViewBag.Branch = Branch;
+
+                administrator.DateUpdated = DateTime.Now;
+                _context.Persons.Update(administrator);
+                _context.SaveChanges();
+
+                TempData["Response"] = "Record Successfully Updated";
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        public IActionResult View(string Id)
+        {
+            var result = _context.Persons.OfType<Administrator>()
+                .Join(_context.BankBranches,
+                    x => x.BankBranchId, d => d.Id,
+                    (person, branch) => new {person, branch})
+                .Join(_context.Addresses, x => x.person.AddressId, d => d.Id,
+                    (person, address) => new {person, address}).FirstOrDefault(x => x.person.person.Id == Id);
+            var model = new PersonJoinView()
+            {
+                Id = result.person.person.Id,
+                FullName = result.person.person.FullName,
+                Email = result.person.person.Email,
+                Sex = result.person.person.Sex,
+                HireDate = result.person.person.HireDate,
+                BranchName = result.person.branch.BranchName,
+                MarritalStatus = result.person.person.MarritalStatus,
+                LastName = result.person.person.LastName,
+                DateOfBirth = result.person.person.DateOfBirth,
+                Age = result.person.person.Age,
+                Address = result.address.ToString
+            };
+            return View(model);
+        }
+
         private async Task CreateAccount(string email)
         {
             var user = new ApplicationUser
@@ -161,8 +229,8 @@ namespace AbcBank.Controllers
                 user.PasswordHash = hashed;
 
                 var userStore = new UserStore<ApplicationUser>(_applicationDbContext);
-                userStore.CreateAsync(user);
-                _applicationDbContext.SaveChangesAsync();
+                await userStore.CreateAsync(user);
+                await _applicationDbContext.SaveChangesAsync();
             }
         }
 
@@ -194,71 +262,11 @@ namespace AbcBank.Controllers
         {
             var user = await _userManager.FindByNameAsync(email);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = Url.Action("CreatePassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+            var callbackUrl = Url.Action("CreatePasswordFirst", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
 
             Mailer.Send(email, "Set Up Password",
                 $"Hello {fullName},<br/><br/>You have been registered as an ABC Bank administrator. <br/><br/>Please click this : <a href='{callbackUrl}'>link</a> to setup your password");
             TempData["Response"] = "Please check your email.";
-        }
-
-        public async Task<IActionResult> Delete(string Id)
-        {
-            var user = _context.Persons.Find(Id);
-            var User = await _userManager.FindByNameAsync(user.Email);
-            await _userManager.DeleteAsync(User);
-            _context.Persons.Remove(user);
-            _context.SaveChanges();
-            TempData["Response"] = "Admin Record Successfully Deleted";
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Edit(string Id)
-        {
-            ViewBag.Sex = new List<string> {"Male", "Female"};
-            ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-
-            List<SelectListItem> AdminType = new List<SelectListItem>();
-            AdminType.Add(new SelectListItem {Text = "Banker", Value = "Banker"});
-            AdminType.Add(new SelectListItem {Text = "Teller", Value = "Teller", Selected = true});
-
-            var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
-
-            ViewBag.AdminType = AdminType;
-            ViewBag.Branch = Branch;
-
-            return View(_context.Persons.Find(Id));
-        }
-
-        [HttpPost]
-        public IActionResult Edit(string Id, Administrator administrator)
-        {
-            ViewBag.Sex = new List<string> {"Male", "Female"};
-            ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-
-            List<SelectListItem> AdminType = new List<SelectListItem>();
-            AdminType.Add(new SelectListItem {Text = "Banker", Value = "Banker"});
-            AdminType.Add(new SelectListItem {Text = "Teller", Value = "Teller", Selected = true});
-
-            var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
-
-            ViewBag.AdminType = AdminType;
-            ViewBag.Branch = Branch;
-
-            administrator.DateUpdated = DateTime.Now;
-            _context.Persons.Update(administrator);
-            _context.SaveChanges();
-
-            TempData["Response"] = "Record Successfully Updated";
-            return RedirectToAction("Index");
-        }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
         }
     }
 }

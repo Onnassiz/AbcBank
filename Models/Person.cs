@@ -53,5 +53,14 @@ namespace AbcBank.Models
         {
             get { return LastName + ", " + FirstName + " " + MiddleName; }
         }
+
+        public int Age {
+            get
+            {
+                var Today = DateTime.Today;
+                var Age = Today.Year - DateOfBirth.Year;
+                return Age;
+            }
+        }
     }
 }

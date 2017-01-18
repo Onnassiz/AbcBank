@@ -1,16 +1,16 @@
 ﻿@model AbcBank.Models.Administrator
 
 @{
-    ViewBag.Title = "Edit Address";
+    ViewBag.Title = "Edit Admin";
 }
 
 <h2>Add Admin</h2><hr/>
 
 <p>
-  <a href="/Admin"><i class="fa  fa-arrow-circle-left"></i> Admin Home Page</a>
+  <a href="/Admin"><i class="fa  fa-arrow-circle-left"></i> Customer Home Page</a>
 </p>
 
-@using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form", id = @Model.Id}))
+@using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form"}))
 {
     <h3>Staff BioData and Info</h3><hr/>
 
@@ -51,6 +51,7 @@
       @Html.LabelFor(m => m.Email, "Email:", new { @class = "col-md-3 control-label" })
       <div class="col-md-9">
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "readonly" })
+        @Html.TextBoxFor(m => m.DateCreated, new { @class = "form-control", @type = "hidden" })
         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
       </div>
     </div>
@@ -93,18 +94,20 @@
       </div>
     </div>
 
-    <div class="form-group">
-      @Html.Label("Select Address", "Admin Type:", new { @class = "col-md-3 control-label" })
-      <div class="col-md-9">
-        @Html.DropDownList("AdminType")<br/>
-      </div>
-    </div>
 
     <div class="form-group">
       @Html.LabelFor(m => m.BankBranchId, "Bank Branch:", new { @class = "col-md-3 control-label" })
       <div class="col-md-9">
         @Html.DropDownList("BankBranchId", (IEnumerable<SelectListItem>)ViewBag.Branch)
         @Html.ValidationMessageFor(m => m.BankBranchId, "", new {@class = "text-danger"})
+      </div>
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.AddressId, Model.FirstName + "'s Address:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9">
+        @Html.DropDownList("AddressId", (IEnumerable<SelectListItem>) ViewBag.Address, new {@class = "selectpicker"})<br/>
+        @Html.ValidationMessageFor(m => m.MarritalStatus, "", new {@class = "text-danger"})
       </div>
     </div>
 
