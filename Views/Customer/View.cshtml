@@ -1,0 +1,66 @@
+﻿@model AbcBank.Models.PersonJoinView
+
+@{
+    ViewBag.Title = @Model.LastName;
+}
+
+<h2>@Model.FullName</h2>
+
+<p>
+  <a href="/Admin"><i class="fa  fa-arrow-circle-left"></i> Customer Home Page</a>
+  <a href="/Admin/Edit/@Model.Id" class="pull-right"><i class="fa  fa-pencil"></i> edit</a>
+</p><hr/>
+
+<div class="container">
+  <div class="form-group">
+    @Html.LabelFor(m => m.Email, "Email:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @Model.Email
+    </div>
+  </div><br/>
+  <div class="form-group">
+    @Html.LabelFor(m => m.Sex, "Sex:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @Model.Sex
+    </div>
+  </div><br/>
+  <div class="form-group">
+    @Html.LabelFor(m => m.MarritalStatus, "Marrital Status:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @Model.MarritalStatus
+    </div>
+  </div><br/>
+  <div class="form-group">
+    @Html.LabelFor(m => m.DateOfBirth, "Date of Birth:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @Model.DateOfBirth.ToString("MMMM dd, yyyy")
+    </div>
+  </div><br/>
+  <div class="form-group">
+    @Html.LabelFor(m => m.Age, "Age:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @Model.Age
+    </div>
+  </div><br/>
+  <div class="form-group">
+    @Html.LabelFor(m => m.BranchName, "Branch:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @Model.BranchName
+    </div>
+  </div><br/>
+  <div class="form-group">
+    @Html.LabelFor(m => m.Address, "Address:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @Model.Address
+    </div>
+  </div><br/><hr/>
+  <h2>Personal Banker</h2>
+  <div class="form-group">
+    @Html.LabelFor(m => m.Banker, "Personal Banker:", new { @class = "col-md-2 control-label" })
+    <div class="col-md-9">
+      @ViewBag.Banker
+    </div>
+  </div><br/>
+</div>
+
+
