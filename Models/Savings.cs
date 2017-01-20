@@ -7,7 +7,7 @@
         }
 
         public int MonthlyLimit {
-            get { return 3; }
+            get { return 4; }
         }
 
         public int MonthlyCount { get; set; }

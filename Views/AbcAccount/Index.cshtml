@@ -1,0 +1,107 @@
+﻿@model IEnumerable<AbcBank.Models.AccountJoinModel>
+
+@{
+    ViewBag.Title = "Abc Accounts";
+}
+
+<h2>Manage Custumer Accounts</h2><hr/>
+
+<p>
+    <a href="/AbcAccount/Create"><i class="fa fa-plus"></i> New Account</a>
+</p>
+
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+
+<table class="table table-hover">
+    <tr>
+        <th>Account Name</th>
+        <th>Account Number</th>
+        <th>Sort Code</th>
+        <th>Branch</th>
+        <th>Holder</th>
+        <th>Category</th>
+        <th>Type</th>
+        <th>State</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <div class="modal fade" tabindex="-1" role="dialog" id="@item.Id">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Warning</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Are you sure you want to delete  <b>@item.AccountName</b> with account number <b>@item.AccountNumber</b>?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button data="@item.Id" type="button" class="btn btn-primary continueDelete">Delete</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <tr>
+            <td>@item.AccountName</td>
+            <td>@item.AccountNumber</td>
+            <td>@item.SortCode</td>
+            <td>@item.Branch</td>
+            <td>@item.Holder</td>
+            <td>@item.Descriminator</td>
+            <td>@if(item.IsJoint){<span>Joint Account</span>}
+                else
+                {
+                    <span>Personal Account</span>
+                }
+            </td>
+            <td>@if(item.IsActive){<span>Active</span>}
+                else
+                {
+                    <span>Closed</span>
+                }
+            </td>
+            <td>
+                <a href="/AbcAccount/Settings/@item.Id" title="settings"><i class="fa fa-cog"></i></a>&nbsp;&nbsp;|
+                <a href="/AbcAccount/Edit/@item.Id" title="edit"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;|
+                <a href="#" class="deleteBrach" data="@item.Id" title="delete">&nbsp;<i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function() {
+                $('.deleteBrach').click(
+                    function () {
+                        var id = $(this).attr('data');
+                        $('#'+id).modal({
+                            show: true
+                        });
+                    });
+                $('.continueDelete').click(
+                    function () {
+                        $(this).attr('disabled','disabled');
+                        var id = $(this).attr('data');
+                        window.location.replace('/AbcAccount/Delete/'+id);
+                    }
+                );
+            }
+        );
+    </script>
+}
+
+
+
+
+

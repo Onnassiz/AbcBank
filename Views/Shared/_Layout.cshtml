@@ -79,11 +79,17 @@
                      }">
             @Html.ActionLink("Administrators", "Index", "Admin")
           </li>
-          <li class="@if (controllerName == "Customer")
+            <li class="@if (controllerName == "Customer")
+                       {
+                           @Html.Raw("active")
+                       }">
+                @Html.ActionLink("Customers", "Index", "Customer")
+            </li>
+            <li class="@if (controllerName == "AbcAccount")
                      {
                          @Html.Raw("active")
                      }">
-            @Html.ActionLink("Customers", "Index", "Customer")
+            @Html.ActionLink("Accounts", "Index", "AbcAccount")
           </li>
         </ul>
       </div>

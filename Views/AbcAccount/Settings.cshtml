@@ -1,0 +1,139 @@
+﻿@model AbcBank.Models.AccountJoinModel
+
+@{
+    ViewBag.Title = @Model.AccountName;
+}
+
+<h2>@Model.AccountName - (@Model.AccountNumber)</h2>
+
+<p>
+    <a href="/Admin"><i class="fa  fa-arrow-circle-left"></i> Accounts</a>
+    <a href="/AbcAccount/Edit/@Model.Id" class="pull-right"><i class="fa  fa-pencil"></i> edit</a>
+</p><hr/>
+
+<div class="container">
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountName, "Account Name:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.AccountName
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountNumber, "Account Number:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.AccountNumber
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Descriminator, "Category:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.Descriminator
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.SortCode, "Sort Code:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.SortCode
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Branch, "Branch:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.Branch
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.IsJoint, "Type:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @if (Model.IsJoint)
+            {
+                <span>Joint Account</span>
+            }
+            else
+            {
+                <span>Personal Account</span>
+            }
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.IsActive, "State:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @if (Model.IsActive)
+            {
+                <span>Active</span>
+            }
+            else
+            {
+                <span>Closed</span>
+            }
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Holder, "Holder(s):", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.Holder
+        </div>
+    </div><br/>
+</div>
+<h2>Logistics</h2>
+<hr/>
+<div class="container">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Balance, "Main Balance:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            <span>&#163</span>@Model.Balance
+        </div>
+    </div>
+    @if (Model.Descriminator == "Current")
+    {
+        <br/>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Overdraft, "Overdraft:", new { @class = "col-md-2 control-label" })
+            <div class="col-md-9">
+                <span>&#163</span>@ViewBag.Overdraft
+            </div>
+        </div><br/>
+        <div class="form-group">
+            @Html.LabelFor(m => m.OverdraftLimit, "Overdraft Limit:", new { @class = "col-md-2 control-label" })
+            <div class="col-md-9">
+                <span>&#163</span>@Model.OverdraftLimit
+            </div>
+        </div><br/>
+        <div class="form-group">
+            @Html.LabelFor(m => m.OverdraftInterestRate, "Overdraft Interest Rate:", new { @class = "col-md-2 control-label" })
+            <div class="col-md-9">
+                @Model.OverdraftInterestRate<span>%</span>
+            </div>
+        </div><br/>
+    }
+    else
+    {
+        <br/>
+        <div class="form-group">
+            @Html.LabelFor(m => m.MonthlyCount, "Monthly Withdrawal Count:", new { @class = "col-md-2 control-label" })
+            <div class="col-md-9">
+                @ViewBag.MonthlyCount
+            </div>
+        </div><br/><br>
+        <div class="form-group">
+            @Html.LabelFor(m => m.MonthlyLimit, "Monthly Withdrawal Limit:", new { @class = "col-md-2 control-label" })
+            <div class="col-md-9">
+                @Model.MonthlyLimit
+            </div>
+        </div><br/><br/>
+        <div class="form-group">
+            @Html.LabelFor(m => m.InterestRate, "Interest Rate:", new { @class = "col-md-2 control-label" })
+            <div class="col-md-9">
+                @Model.InterestRate
+            </div>
+        </div><br/>
+    }
+</div>
+<h2>Operations</h2><hr/>
+<div class="container">
+    <div class="col-md-pull-2"><a href="/AbcAccount/AddHolder/@Model.Id"><i class="fa fa-plus"></i> Add Holder</a></div>
+    <div class="col-md-pull-2"><a href="#"><i class="fa fa-power-off"></i> Activate Account</a></div>
+    <div class="col-md-pull-2"><a href="#"><i class="fa fa-ticket"></i> Perform Trasaction</a></div>
+    <div class="col-md-pull-2"><a href="#"><i class="fa fa-list-ul"></i> Transaction History</a></div>
+</div>
+

@@ -16,6 +16,44 @@ namespace AbcBank.Migrations.MyDb
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
 
+            modelBuilder.Entity("AbcBank.Models.Account", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountName")
+                        .IsRequired();
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired();
+
+                    b.Property<double>("Balance");
+
+                    b.Property<DateTime>("CloseDate");
+
+                    b.Property<double>("DailyIn");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("Descriminator")
+                        .IsRequired();
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsJoint");
+
+                    b.Property<string>("SortCode");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountName")
+                        .IsUnique();
+
+                    b.ToTable("Accounts");
+
+                    b.HasDiscriminator<string>("Descriminator").HasValue("Account");
+                });
+
             modelBuilder.Entity("AbcBank.Models.Address", b =>
                 {
                     b.Property<string>("Id")
@@ -122,6 +160,28 @@ namespace AbcBank.Migrations.MyDb
                     b.ToTable("Persons");
 
                     b.HasDiscriminator<string>("Descriminator").HasValue("Person");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Current", b =>
+                {
+                    b.HasBaseType("AbcBank.Models.Account");
+
+                    b.Property<double>("OverDraft");
+
+                    b.ToTable("Current");
+
+                    b.HasDiscriminator().HasValue("Current");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Savings", b =>
+                {
+                    b.HasBaseType("AbcBank.Models.Account");
+
+                    b.Property<int>("MonthlyCount");
+
+                    b.ToTable("Savings");
+
+                    b.HasDiscriminator().HasValue("Savings");
                 });
 
             modelBuilder.Entity("AbcBank.Models.Administrator", b =>

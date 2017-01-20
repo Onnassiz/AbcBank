@@ -62,5 +62,7 @@ namespace AbcBank.Models
                 return Age;
             }
         }
+
+        public List<AccountHolder> AccountHolders { get; set; }
     }
 }

@@ -1,0 +1,32 @@
+﻿@model AbcBank.Models.Account
+
+@{
+    ViewBag.Title = "Add Account Holder";
+}
+
+<h2>Add Holder for (@ViewBag.AccountName) with account number (@ViewBag.AccountNumber)</h2><hr/>
+
+<p>
+    <a href="/AbcAccount/Settings/@ViewBag.Id"><i class="fa  fa-arrow-circle-left"></i> Back</a>
+</p>
+
+@using (Html.BeginForm("AddHolder", "AbcAccount", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form"}))
+{
+    <h3>Account Holder's Name</h3><hr/>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+@*    <div class="form-group">*@
+@*        @Html.LabelFor(m => m.SortCode, "Sort Code:", new { @class = "col-md-3 control-label" })*@
+@*        <div class="col-md-9">*@
+@*            @Html.DropDownList("SortCode", (IEnumerable<SelectListItem>)ViewBag.Branch)*@
+@*            @Html.ValidationMessageFor(m => m.SortCode, "", new {@class = "text-danger"})*@
+@*        </div>*@
+@*    </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-6 col-md-2">
+            <input type="submit" value="Add" class="btn btn-default form-control"/>
+        </div>
+    </div>
+}

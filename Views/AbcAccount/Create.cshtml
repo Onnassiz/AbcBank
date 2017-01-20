@@ -1,0 +1,92 @@
+﻿@model AbcBank.Models.Account
+
+@{
+    ViewBag.Title = "Create Account";
+}
+
+<h2>Create New Account</h2><hr/>
+
+<p>
+    <a href="/AbcAccount"><i class="fa  fa-arrow-circle-left"></i> Accounts</a>
+</p>
+
+@using (Html.BeginForm("Create", "AbcAccount", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form"}))
+{
+    <h3>Account Information</h3><hr/>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountName, "Account Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.AccountName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.AccountName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-10">
+            <div class="checkbox">
+                <label asp-for="IsJoint">
+                    <input asp-for="IsJoint" />
+                    @Html.DisplayNameFor(m => m.IsJoint)
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountNumber, "Account Number:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", @readonly = "readonly" })
+            <span class="col-md-5 help-block"><a href="#" class="generateAccountNumber">Generate Account Number</a></span><br/>
+            <br/>@Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.Descriminator, "Descriminator:", new { @class = "col-md-3 control-label" })
+      <div class="col-md-9" style="margin-top: 5px">
+        @foreach (var item in ViewBag.AccountType)
+        {
+            <input asp-for="Descriminator" type="radio" value="@item" /> @item <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        }<br/>
+        @Html.ValidationMessageFor(m => m.Descriminator, "", new {@class = "text-danger"})
+      </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.SortCode, "Sort Code:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.DropDownList("SortCode", (IEnumerable<SelectListItem>)ViewBag.Branch)
+            @Html.ValidationMessageFor(m => m.SortCode, "", new {@class = "text-danger"})
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-6 col-md-2">
+            <input type="submit" value="Add" class="btn btn-default form-control"/>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function() {
+                $(".generateAccountNumber").click(
+                    function() {
+                        var accountNumber = "60";
+                        var rand = Math.floor(Math.random() * 40) + 10;
+                        accountNumber = accountNumber + rand;
+                        var rand = Math.floor(Math.random() * 40) + 10;
+                        accountNumber = accountNumber + rand;
+                        var rand = Math.floor(Math.random() * 40) + 10;
+                        accountNumber = accountNumber + rand;
+                        $('#AccountNumber').val(accountNumber);
+                    }
+                );
+            }
+        );
+    </script>
+}
