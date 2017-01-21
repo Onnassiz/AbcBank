@@ -1,4 +1,4 @@
-﻿@model AbcBank.Models.Account
+﻿@model AbcBank.Models.AccountHolder
 
 @{
     ViewBag.Title = "Add Account Holder";
@@ -16,13 +16,14 @@
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
-@*    <div class="form-group">*@
-@*        @Html.LabelFor(m => m.SortCode, "Sort Code:", new { @class = "col-md-3 control-label" })*@
-@*        <div class="col-md-9">*@
-@*            @Html.DropDownList("SortCode", (IEnumerable<SelectListItem>)ViewBag.Branch)*@
-@*            @Html.ValidationMessageFor(m => m.SortCode, "", new {@class = "text-danger"})*@
-@*        </div>*@
-@*    </div>*@
+    <div class="form-group">
+        @Html.LabelFor(m => m.PersonId, "Holder's Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.DropDownList("PersonId", (IEnumerable<SelectListItem>)ViewBag.Persons)
+        </div>
+    </div>
+
+    <input type="hidden" value="@ViewBag.Id" name="AccountId">
 
     <div class="form-group">
         <div class="col-md-offset-6 col-md-2">

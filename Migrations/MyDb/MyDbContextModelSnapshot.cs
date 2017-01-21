@@ -54,6 +54,26 @@ namespace AbcBank.Migrations.MyDb
                     b.HasDiscriminator<string>("Descriminator").HasValue("Account");
                 });
 
+            modelBuilder.Entity("AbcBank.Models.AccountHolder", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountId")
+                        .IsRequired();
+
+                    b.Property<string>("PersonId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("AccountHolders");
+                });
+
             modelBuilder.Entity("AbcBank.Models.Address", b =>
                 {
                     b.Property<string>("Id")
@@ -206,6 +226,19 @@ namespace AbcBank.Migrations.MyDb
                     b.ToTable("Customer");
 
                     b.HasDiscriminator().HasValue("Customer");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.AccountHolder", b =>
+                {
+                    b.HasOne("AbcBank.Models.Account", "Account")
+                        .WithMany("AccountHolders")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbcBank.Models.Person", "Person")
+                        .WithMany("AccountHolders")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AbcBank.Models.BankBranch", b =>

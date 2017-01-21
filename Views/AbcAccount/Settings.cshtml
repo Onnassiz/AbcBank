@@ -5,6 +5,18 @@
 }
 
 <h2>@Model.AccountName - (@Model.AccountNumber)</h2>
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"].ToString()
+    </div>
+}
 
 <p>
     <a href="/Admin"><i class="fa  fa-arrow-circle-left"></i> Accounts</a>
@@ -71,7 +83,10 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Holder, "Holder(s):", new { @class = "col-md-2 control-label" })
         <div class="col-md-9">
-            @Model.Holder
+            @foreach (var item in ViewBag.Holders)
+            {
+                <span>@item</span><br/>
+            }
         </div>
     </div><br/>
 </div>
@@ -112,19 +127,19 @@
         <div class="form-group">
             @Html.LabelFor(m => m.MonthlyCount, "Monthly Withdrawal Count:", new { @class = "col-md-2 control-label" })
             <div class="col-md-9">
-                @ViewBag.MonthlyCount
+                @ViewBag.MonthlyCount times
             </div>
         </div><br/><br>
         <div class="form-group">
             @Html.LabelFor(m => m.MonthlyLimit, "Monthly Withdrawal Limit:", new { @class = "col-md-2 control-label" })
             <div class="col-md-9">
-                @Model.MonthlyLimit
+                @Model.MonthlyLimit times
             </div>
         </div><br/><br/>
         <div class="form-group">
             @Html.LabelFor(m => m.InterestRate, "Interest Rate:", new { @class = "col-md-2 control-label" })
             <div class="col-md-9">
-                @Model.InterestRate
+                @Model.InterestRate<span>%</span>
             </div>
         </div><br/>
     }
@@ -132,8 +147,85 @@
 <h2>Operations</h2><hr/>
 <div class="container">
     <div class="col-md-pull-2"><a href="/AbcAccount/AddHolder/@Model.Id"><i class="fa fa-plus"></i> Add Holder</a></div>
-    <div class="col-md-pull-2"><a href="#"><i class="fa fa-power-off"></i> Activate Account</a></div>
+    @if (Model.IsActive)
+    {
+        <div class="col-md-pull-2"><a href="#" class="closeAccount"><i class="fa fa-power-off"></i> Close Account</a></div>
+    }
+    else
+    {
+        <div class="col-md-pull-2"><a href="#" class="activeAccount"><i class="fa fa-power-off"></i> Activate Account</a></div>
+    }
     <div class="col-md-pull-2"><a href="#"><i class="fa fa-ticket"></i> Perform Trasaction</a></div>
     <div class="col-md-pull-2"><a href="#"><i class="fa fa-list-ul"></i> Transaction History</a></div>
 </div>
 
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function() {
+                $('.activeAccount').click(
+                    function () {
+                        $('#modelActive').modal({
+                            show: true
+                        });
+                    });
+                $('.continueActivate').click(
+                    function () {
+                        $(this).attr('disabled','disabled');
+                        var id = $(this).attr('data');
+                        window.location.replace('/AbcAccount/Activate/'+id);
+                    }
+                );
+                $('.closeAccount').click(
+                    function () {
+                        $('#modelActiveClose').modal({
+                            show: true
+                        });
+                    });
+                $('.continueActivate').click(
+                    function () {
+                        $(this).attr('disabled','disabled');
+                        var id = $(this).attr('data');
+                        window.location.replace('/AbcAccount/Close/'+id);
+                    }
+                );
+            }
+        );
+    </script>
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modelActive">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to activate <b>@Model.AccountName</b> with account number <b>@Model.AccountNumber</b>?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button data="@Model.Id" type="button" class="btn btn-primary continueActivate">Activate</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modelActiveClose">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to close <b>@Model.AccountName</b> with account number <b>@Model.AccountNumber</b>?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button data="@Model.Id" type="button" class="btn btn-primary continueActivate">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

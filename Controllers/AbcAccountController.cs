@@ -145,6 +145,8 @@ namespace AbcBank.Controllers
                 ViewBag.MonthlyCount = savingsAcc.MonthlyCount;
             }
 
+            ViewBag.Holders = GetHolders(Id);
+
             var result = _context.Accounts.Join(_context.BankBranches, x => x.SortCode, y => y.SortCode,
                     (account, branch) => new {account, branch}
                 ).FirstOrDefault(x => x.account.Id == Id);
@@ -176,7 +178,113 @@ namespace AbcBank.Controllers
             ViewBag.Id = account.Id;
             ViewBag.AccountName = account.AccountName;
             ViewBag.AccountNumber = account.AccountNumber;
+
+            var BranchId = _context.BankBranches.FirstOrDefault(x => x.SortCode == account.SortCode).Id;
+            ViewBag.Persons = new SelectList(_context.Persons.Where(x => x.BankBranchId == BranchId && x.Descriminator == "Customer"), "Id", "FullName");
+
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddHolder(AccountHolder accountHolder, string Id)
+        {
+            accountHolder.Id = null;
+            if (!HolderExist(accountHolder.AccountId, accountHolder.PersonId))
+            {
+                if (IsJoint(Id))
+                {
+                    var holderCount = _context.AccountHolders.Where(x => x.AccountId == Id).Count();
+                    var account = new Account();
+                    if (holderCount >= account.JointHolderLimit)
+                    {
+                        TempData["Error"] = "Holders' limit exceeded. More than 3 holders cannot be tagged to an account.";
+                        return RedirectToAction("Settings", new {id = Id});
+                    }
+                    _context.AccountHolders.Add(accountHolder);
+                    _context.SaveChanges();
+                    TempData["Response"] = "A holder has been successfully added to this account";
+                    return RedirectToAction("Settings", new {id = Id});
+                }
+                if (HasHolder(accountHolder.AccountId))
+                {
+                    TempData["Error"] = "Account already has a holder";
+                    return RedirectToAction("Settings", new {id = Id});
+                }
+                _context.AccountHolders.Add(accountHolder);
+                _context.SaveChanges();
+                TempData["Response"] = "A holder has been successfully added to this account";
+                return RedirectToAction("Settings", new {id = Id});
+            }
+            TempData["Error"] = "This holder has already been mapped to this account";
+            return RedirectToAction("Settings", new {id = Id});
+        }
+
+        private bool IsJoint(string Id)
+        {
+            if (_context.Accounts.Find(Id).IsJoint)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool HolderExist(string accountId, string personId)
+        {
+            if (_context.AccountHolders.Where(x => x.AccountId == accountId && x.PersonId == personId).Any())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool HasHolder(string accountId)
+        {
+            if (_context.AccountHolders.Where(x => x.AccountId == accountId).Any())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private List<string> GetHolders(string accountId)
+        {
+            List<string> Holders = new List<string>();
+
+            var personIds = _context.AccountHolders.Where(x => x.AccountId == accountId)
+                .Join(_context.Persons, b => b.PersonId, j => j.Id,
+                (accountHolder, person) => new{accountHolder, person});
+
+            foreach (var item in personIds)
+            {
+                Holders.Add(item.person.FullName);
+            }
+
+            return Holders;
+        }
+
+        public IActionResult Activate(string Id)
+        {
+            if (!HasHolder(Id))
+            {
+                TempData["Error"] = "Cannot activated an account without a holder. Set account holder first";
+                return RedirectToAction("Settings", new {id = Id});
+            }
+            Account account = _context.Accounts.Find(Id);
+            account.IsActive = true;
+            _context.Accounts.Update(account);
+            _context.SaveChanges();
+            TempData["Response"] = "Account activated";
+            return RedirectToAction("Settings", new {id = Id});
+        }
+
+        public IActionResult Close(string Id)
+        {
+            Account account = _context.Accounts.Find(Id);
+            account.IsActive = false;
+            _context.Accounts.Update(account);
+            _context.SaveChanges();
+            TempData["Response"] = "Account closed.";
+            return RedirectToAction("Settings", new {id = Id});
         }
     }
 }
