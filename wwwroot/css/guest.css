@@ -343,3 +343,8 @@ a{
 .body-h3{
     color: rgba(0, 0, 0, 0.6);
 }
+
+a:hover {
+    color: #00CAFB;
+    text-decoration: none;
+}

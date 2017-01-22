@@ -64,5 +64,7 @@ namespace AbcBank.Models
         }
 
         public List<AccountHolder> AccountHolders { get; set; }
+
+        public List<Transaction> Transactions { get; set; }
     }
 }

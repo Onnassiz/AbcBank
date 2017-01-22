@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using AbcBank.Controllers;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AbcBank.Models
@@ -18,6 +14,7 @@ namespace AbcBank.Models
         public DbSet<Person> Persons { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountHolder> AccountHolders { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,6 +39,14 @@ namespace AbcBank.Models
             modelBuilder.Entity<AccountHolder>()
                 .HasOne(p => p.Person)
                 .WithMany(p => p.AccountHolders)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Transaction>()
+                .HasOne(p => p.Account)
+                .WithMany(p => p.Transactions)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Transaction>()
+                .HasOne(p => p.Person)
+                .WithMany(p => p.Transactions)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<BankBranch>()
                 .HasIndex(b => b.BranchName).IsUnique();

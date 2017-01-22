@@ -1,0 +1,33 @@
+﻿@model IEnumerable<AbcBank.Models.Transaction>
+
+@{
+    ViewBag.Title = "Transactions";
+}
+
+<h2>Account Transactions</h2><hr/>
+<div class="dropdown">
+    <a id="dLabel" data-target="#" href="http://example.com" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="">
+        New Transaction
+        <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu" aria-labelledby="drop4">
+        <li>@Html.ActionLink("Credit", "Index", "Credit")</li>
+        <li>@Html.ActionLink("Debit", "Credit", "Credit")</li>
+        <li>@Html.ActionLink("Fund Transfer", "Credit", "Credit")</li><hr/>
+        <li>@Html.ActionLink("Set Savings Interest", "Credit", "Credit")</li>
+    </ul>
+</div>
+
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+
+
+
+
+
+

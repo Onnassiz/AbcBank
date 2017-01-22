@@ -1,0 +1,43 @@
+﻿@model AbcBank.Models.Transaction
+
+@{
+    ViewBag.Title = "Credit Account";
+}
+
+<h2>Credit Transactions</h2><hr/>
+<p>
+    <a href="/Transaction/Create"><i class="fa fa-arrow-circle-left"></i> Transactions</a>
+</p>
+
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+
+
+@using (Html.BeginForm("Index", "Credit", FormMethod.Get, new { @class = "form-horizontal col-md-8", role = "form"}))
+{
+    <h3>Account Name</h3><hr/>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountId, "Account Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.DropDownList("Id", (IEnumerable<SelectListItem>)ViewBag.Accounts)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-6 col-md-2">
+            <input type="submit" value="Next" class="btn btn-default form-control"/>
+        </div>
+    </div>
+}
+
+
+
+
+

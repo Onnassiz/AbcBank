@@ -90,6 +90,11 @@
                          @Html.Raw("active")
                      }">
             @Html.ActionLink("Accounts", "Index", "AbcAccount")
+            <li class="@if (controllerName == "Transaction" || controllerName == "Credit")
+                     {
+                         @Html.Raw("active")
+                     }">
+            @Html.ActionLink("Transaction", "Index", "Transaction")
           </li>
         </ul>
       </div>

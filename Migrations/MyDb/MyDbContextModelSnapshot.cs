@@ -182,6 +182,34 @@ namespace AbcBank.Migrations.MyDb
                     b.HasDiscriminator<string>("Descriminator").HasValue("Person");
                 });
 
+            modelBuilder.Entity("AbcBank.Models.Transaction", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountId")
+                        .IsRequired();
+
+                    b.Property<double>("Amount");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("PersonId");
+
+                    b.Property<string>("Type")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("AbcBank.Models.Current", b =>
                 {
                     b.HasBaseType("AbcBank.Models.Account");
@@ -259,6 +287,19 @@ namespace AbcBank.Migrations.MyDb
                     b.HasOne("AbcBank.Models.BankBranch", "BankBranch")
                         .WithMany("Persons")
                         .HasForeignKey("BankBranchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Transaction", b =>
+                {
+                    b.HasOne("AbcBank.Models.Account", "Account")
+                        .WithMany("Transactions")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbcBank.Models.Person", "Person")
+                        .WithMany("Transactions")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

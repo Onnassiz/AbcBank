@@ -246,7 +246,7 @@ namespace AbcBank.Controllers
             return false;
         }
 
-        private List<string> GetHolders(string accountId)
+        public List<string> GetHolders(string accountId)
         {
             List<string> Holders = new List<string>();
 

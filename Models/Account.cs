@@ -42,5 +42,7 @@ namespace AbcBank.Models
         public string Descriminator { get; set; }
 
         public List<AccountHolder> AccountHolders { get; set; }
+
+        public List<Transaction> Transactions { get; set; }
     }
 }
