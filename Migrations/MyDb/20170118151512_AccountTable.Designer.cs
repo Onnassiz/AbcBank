@@ -1,0 +1,234 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using AbcBank.Models;
+
+namespace AbcBank.Migrations.MyDb
+{
+    [DbContext(typeof(MyDbContext))]
+    [Migration("20170118151512_AccountTable")]
+    partial class AccountTable
+    {
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
+
+            modelBuilder.Entity("AbcBank.Models.Account", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountName")
+                        .IsRequired();
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired();
+
+                    b.Property<double>("Balance");
+
+                    b.Property<DateTime>("CloseDate");
+
+                    b.Property<double>("DailyIn");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("Descriminator")
+                        .IsRequired();
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsJoint");
+
+                    b.Property<string>("SortCode");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountName")
+                        .IsUnique();
+
+                    b.ToTable("Accounts");
+
+                    b.HasDiscriminator<string>("Descriminator").HasValue("Account");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Address", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("County")
+                        .IsRequired();
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateUpdated");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired();
+
+                    b.Property<string>("PostCode")
+                        .IsRequired();
+
+                    b.Property<string>("Street")
+                        .IsRequired();
+
+                    b.Property<string>("ToString");
+
+                    b.Property<string>("Town")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostCode")
+                        .IsUnique();
+
+                    b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.BankBranch", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AddressId");
+
+                    b.Property<string>("BranchName")
+                        .IsRequired();
+
+                    b.Property<string>("SortCode")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("BranchName")
+                        .IsUnique();
+
+                    b.ToTable("BankBranches");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Person", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AddressId");
+
+                    b.Property<string>("BankBranchId");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateOfBirth");
+
+                    b.Property<DateTime>("DateUpdated");
+
+                    b.Property<string>("Descriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<string>("FirstName")
+                        .IsRequired();
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
+
+                    b.Property<string>("MaidenName");
+
+                    b.Property<string>("MarritalStatus")
+                        .IsRequired();
+
+                    b.Property<string>("MiddleName");
+
+                    b.Property<string>("Sex")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("BankBranchId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Persons");
+
+                    b.HasDiscriminator<string>("Descriminator").HasValue("Person");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Current", b =>
+                {
+                    b.HasBaseType("AbcBank.Models.Account");
+
+                    b.Property<double>("OverDraft");
+
+                    b.ToTable("Current");
+
+                    b.HasDiscriminator().HasValue("Current");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Savings", b =>
+                {
+                    b.HasBaseType("AbcBank.Models.Account");
+
+                    b.Property<int>("MonthlyCount");
+
+                    b.ToTable("Savings");
+
+                    b.HasDiscriminator().HasValue("Savings");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Administrator", b =>
+                {
+                    b.HasBaseType("AbcBank.Models.Person");
+
+                    b.Property<int>("CustomerCount");
+
+                    b.Property<DateTime>("HireDate");
+
+                    b.ToTable("Administrator");
+
+                    b.HasDiscriminator().HasValue("Bank Personnel");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Customer", b =>
+                {
+                    b.HasBaseType("AbcBank.Models.Person");
+
+                    b.Property<string>("BankerId");
+
+                    b.ToTable("Customer");
+
+                    b.HasDiscriminator().HasValue("Customer");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.BankBranch", b =>
+                {
+                    b.HasOne("AbcBank.Models.Address", "Address")
+                        .WithMany("BankBranches")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Person", b =>
+                {
+                    b.HasOne("AbcBank.Models.Address", "Address")
+                        .WithMany("Persons")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbcBank.Models.BankBranch", "BankBranch")
+                        .WithMany("Persons")
+                        .HasForeignKey("BankBranchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+        }
+    }
+}
