@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AbcBank.Models.Transaction>
+﻿@model IEnumerable<AbcBank.Models.TransactionJoinView>
 
 @{
     ViewBag.Title = "Transactions";
@@ -22,10 +22,37 @@
 @if (TempData["Response"] != null)
 {
     <div class="alert alert-success">
-        @TempData["Response"].ToString()
+        @Html.Raw(TempData["Response"].ToString())
     </div>
 }
-
+<br/><br/>
+<table class="table table-hover">
+    <tr>
+        <th>DateTime</th>
+        <th>Account Name</th>
+        <th>Account Number</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>From</th>
+        <th>Personel</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.DateCreated</td>
+            <td>@item.AccountName</td>
+            <td>@item.AccountNumber</td>
+            <td>@item.Amount</td>
+            <td>@item.Type</td>
+            <td>@item.From</td>
+            <td>@item.Personnel</td>
+            <td>
+                <a href="/Transaction/View/@item.Id" title="settings"><i class="fa fa-cog"></i></a>&nbsp;&nbsp;|
+            </td>
+        </tr>
+    }
+</table>
 
 
 

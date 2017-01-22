@@ -196,6 +196,8 @@ namespace AbcBank.Migrations.MyDb
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("From");
+
                     b.Property<string>("PersonId");
 
                     b.Property<string>("Type")

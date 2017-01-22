@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AbcBank.Controllers;
 using AbcBank.Models;
@@ -13,10 +15,13 @@ namespace AbcBank.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public DashboardController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly MyDbContext _context;
+
+        public DashboardController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, MyDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -27,7 +32,8 @@ namespace AbcBank.Controllers
             ViewBag.Role = User.Email;
             return View();
         }
-        private Task<ApplicationUser> GetCurrentUserAsync()
+
+        public Task<ApplicationUser> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
         }
@@ -44,7 +50,28 @@ namespace AbcBank.Controllers
                     await _roleManager.CreateAsync(roleName);
                     await _userManager.AddToRoleAsync(User, "Manager");
                 }
+
+                if (!_context.Persons.Where(x => x.Email == User.Email).Any())
+                {
+                    Administrator person = new Administrator
+                    {
+                        LastName = "Charles",
+                        FirstName = "Duke",
+                        Email = User.Email,
+                        MarritalStatus = "Married",
+                        Sex = "Male",
+                        DateOfBirth = DateTime.Parse("1995-06-21 00:00:00"),
+                        DateCreated = DateTime.Now,
+                        DateUpdated = DateTime.Now,
+                        Descriminator = "Bank Personnel",
+                        HireDate = DateTime.Parse("2005-06-24 00:00:00")
+                    };
+
+                    _context.Persons.Add(person);
+                    _context.SaveChanges();
+                }
             }
         }
+
     }
 }

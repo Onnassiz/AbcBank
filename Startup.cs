@@ -91,8 +91,6 @@ namespace AbcBank
             app.UseStatusCodePagesWithRedirects("~/Errors/Type/{0}");
 
 
-
-
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
@@ -103,8 +101,8 @@ namespace AbcBank
 
                 routes.MapRoute(
                     "CreditTask",                                              // Route name
-                    "{controller}/{action}/{id}/{amount}",                           // URL with parameters
-                    new { controller = "Home", action = "Index", id = "", amount = "" }  // Parameter defaults
+                    "{controller}/{action}/{id}/{from?}/{amount}",                           // URL with parameters
+                    new { controller = "Home", action = "Index", id = "", from = "", amount = "" }  // Parameter defaults
                 );
             });
 

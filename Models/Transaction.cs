@@ -11,12 +11,14 @@ namespace AbcBank.Models
         public string AccountId { get; set; }
 
         [Required]
+        public double Amount { get; set; }
+
+        [Required]
         public string Type { get; set; }
 
         public DateTime DateCreated { get; set; }
 
-        [Required]
-        public double Amount { get; set; }
+        public string From { get; set; }
 
         public string Description { get; set; }
 
