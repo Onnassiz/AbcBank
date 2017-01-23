@@ -12,5 +12,6 @@ namespace AbcBank.Models
         public double Amount { get; set; }
         public string From { get; set; }
         public string Personnel { get; set; }
+        public string Description { get; set; }
     }
 }

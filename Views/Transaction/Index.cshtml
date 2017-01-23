@@ -13,7 +13,7 @@
 
     <ul class="dropdown-menu" aria-labelledby="drop4">
         <li>@Html.ActionLink("Credit", "Index", "Credit")</li>
-        <li>@Html.ActionLink("Debit", "Credit", "Credit")</li>
+        <li>@Html.ActionLink("Debit", "Index", "Debit")</li>
         <li>@Html.ActionLink("Fund Transfer", "Credit", "Credit")</li><hr/>
         <li>@Html.ActionLink("Set Savings Interest", "Credit", "Credit")</li>
     </ul>
@@ -28,7 +28,7 @@
 <br/><br/>
 <table class="table table-hover">
     <tr>
-        <th>DateTime</th>
+        <th>Transaction Date</th>
         <th>Account Name</th>
         <th>Account Number</th>
         <th>Amount</th>
@@ -40,15 +40,24 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@item.DateCreated</td>
+            <td>@item.DateCreated.ToString("dddd, MMMM dd, yyyy h:mm tt")</td>
             <td>@item.AccountName</td>
             <td>@item.AccountNumber</td>
-            <td>@item.Amount</td>
-            <td>@item.Type</td>
+            <td><span>&#163</span>@item.Amount</td>
+            <td>
+                @if (item.Type == "Credit")
+                {
+                    <span style="color: #3c763d">Credit</span>
+                }
+                else
+                {
+                    <span style="color: red">Debit</span>
+                }
+            </td>
             <td>@item.From</td>
             <td>@item.Personnel</td>
             <td>
-                <a href="/Transaction/View/@item.Id" title="settings"><i class="fa fa-cog"></i></a>&nbsp;&nbsp;|
+                <a href="/Transaction/View/@item.Id" title="view"><i class="fa fa-arrow-circle-right"></i></a>
             </td>
         </tr>
     }
