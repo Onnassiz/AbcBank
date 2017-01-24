@@ -19,7 +19,7 @@
 
 @using (Html.BeginForm("Target", "Debit", FormMethod.Get, new { @class = "form-horizontal col-md-8", role = "form"}))
 {
-    <h3>Balance: <span style="color: #00CAFB"><span>&#163</span>@Model.Balance</span></h3><hr/>
+    <h3>Balance: <span style="color: #00CAFB"><span>&#163</span>@Model.Balance.ToString("F2")</span></h3><hr/>
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -34,22 +34,15 @@
     </div><br/>
 
     <div class="form-group">
-        @Html.Label("", "From:", new { @class = "col-md-2 control-label" })
-        <div class="col-md-9">
-            @Html.TextBox("From", null, new { @class = "form-control", required = "required"})
-        </div>
-    </div>
-
-    <div class="form-group">
         @Html.Label("", "Amount:", new { @class = "col-md-2 control-label" })
         <div class="col-md-9">
-            @Html.TextBox("Amount", null, new { @class = "form-control", type = "number", min = 0, required = "required"})
+            @Html.TextBox("Amount", null, new { @class = "form-control", type = "number", min = 0, required = "required", step = "0.01"})
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-5 col-md-2">
-            <input type="submit" value="Credit" class="btn btn-default form-control"/>
+            <input type="submit" value="Debit" class="btn btn-default form-control"/>
         </div>
     </div>
 }

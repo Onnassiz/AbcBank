@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using NuGet.Protocol.Core.v3;
 
 namespace AbcBank.Controllers
 {
@@ -70,6 +69,7 @@ namespace AbcBank.Controllers
                     savings.DateCreated = DateTime.Now;
                     savings.DailyIn = 0.00;
                     _context.Accounts.Add(savings);
+                    TempData["ResponseSuccess"] = "/AbcAccount/Setting/" + savings.Id;
                 }
                 else
                 {
@@ -78,6 +78,7 @@ namespace AbcBank.Controllers
                     current.DateCreated = DateTime.Now;
                     current.DailyIn = 0.00;
                     _context.Accounts.Add(current);
+                    TempData["ResponseSuccess"] = "/AbcAccount/Settings/" + current.Id;
                 }
                 try
                 {
@@ -92,7 +93,6 @@ namespace AbcBank.Controllers
                         return View();
                     }
                 }
-                TempData["Response"] = "You have successfully created a new account number.";
                 return RedirectToAction("Index");
             }
             return View();
@@ -154,7 +154,7 @@ namespace AbcBank.Controllers
             Current current = new Current();
             Savings savings = new Savings();
 
-            var model = new AccountJoinModel()
+            var model = new AccountJoinModel
             {
                 Id = result.account.Id,
                 AccountName = result.account.AccountName,
@@ -167,7 +167,9 @@ namespace AbcBank.Controllers
                 OverdraftLimit = current.OverDraftLimit,
                 OverdraftInterestRate = current.OverdraftInterestRate,
                 MonthlyLimit = savings.MonthlyLimit,
-                InterestRate = savings.InterestRate
+                InterestRate = savings.InterestRate,
+                Balance = result.account.Balance,
+                DailyOut = result.account.DailyOut
             };
             return View(model);
         }
@@ -237,7 +239,7 @@ namespace AbcBank.Controllers
             return false;
         }
 
-        private bool HasHolder(string accountId)
+        public bool HasHolder(string accountId)
         {
             if (_context.AccountHolders.Where(x => x.AccountId == accountId).Any())
             {

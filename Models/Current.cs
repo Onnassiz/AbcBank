@@ -9,7 +9,7 @@
         public double OverDraft { get; set; }
 
         public double OverdraftInterestRate {
-            get { return 4; }
+            get { return 10; }
         }
     }
 }

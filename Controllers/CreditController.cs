@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AbcBank.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AbcBank.Controllers
 {
@@ -18,14 +17,25 @@ namespace AbcBank.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string Id = null)
+        public IActionResult Index()
         {
-            if (Id != null)
-            {
-                return RedirectToAction("Target", new {id = Id});
-            }
-            ViewBag.Accounts = new SelectList(_context.Accounts.ToList(), "Id", "AccountName");
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Find(Account account)
+        {
+            var result = _context.Accounts.FirstOrDefault(x => x.AccountNumber == account.AccountNumber);
+            string type = Request.Form["Type"].ToString();
+            if (result == null)
+            {
+                TempData["Error"] = "Account not found";
+            }
+            if (type == "Credit")
+            {
+                return result != null? RedirectToAction("Target", new {id = result.Id}) : RedirectToAction("Index");
+            }
+            return result != null? RedirectToAction("Target", "Debit", new {id = result.Id}) : RedirectToAction("Index", "Debit");
         }
 
         public IActionResult Target(string Id, string From, string Amount)
@@ -33,35 +43,48 @@ namespace AbcBank.Controllers
             if (Amount != null && From != null )
             {
                 double Number;
-                bool parse = Double.TryParse(Amount, out Number);
+                var parse = Double.TryParse(Amount, out Number);
+                var abcAccountController = new AbcAccountController(_context);
+                ViewBag.Holders = abcAccountController.GetHolders(Id);
+
+                if (!abcAccountController.HasHolder(Id))
+                {
+                    TempData["Error"] = "No holder was found on this account Number";
+                    return RedirectToAction("Target", new {id = Id});
+                }
+
                 if (parse)
                 {
+                    Number = Math.Round(Number, 2);
                     return RedirectToAction("Task", new {id = Id, amount = Number, from = From});
                 }
                 TempData["Error"] = "The value you supplied is out of format";
                 return RedirectToAction("Target", new {id = Id});
             }
-            AbcAccountController abcAccountController = new AbcAccountController(_context);
-            ViewBag.Holders = abcAccountController.GetHolders(Id);
             return View(_context.Accounts.Find(Id));
         }
 
         public async Task<IActionResult> Task(string Id, string From, double Amount)
         {
             var transId = await AddTransaction( From, Id, "Credit", Amount);
-            if (IsSavings(Id))
+            var transaction = new TransactionController(_context);
+            if (transaction.IsSavings(Id))
             {
                 CreditSavings(Id, Amount);
             }
-            CreditCurrent(Id, Amount);
+            else
+            {
+                CreditCurrent(Id, Amount);
+            }
+
             var href = "Transaction/View/" + transId;
-            TempData["Response"] = "Credit operation successful. To view transaction details, click <a href='" + href + "' >here<a/>";
+            TempData["ResponseCredit"] = href;
             return RedirectToAction("Index", "Transaction");
         }
 
         public void CreditSavings(string AccountId, double Amount)
         {
-            Account account = _context.Accounts.Find(AccountId);
+            var account = _context.Accounts.Find(AccountId);
             account.Balance += Amount;
             _context.Accounts.Update(account);
             _context.SaveChanges();
@@ -69,15 +92,10 @@ namespace AbcBank.Controllers
 
         public void CreditCurrent(string AccountId, double Amount)
         {
-            Account account = _context.Accounts.Find(AccountId);
+            var account = _context.Accounts.Find(AccountId);
             account.Balance += Amount;
             _context.Accounts.Update(account);
             _context.SaveChanges();
-        }
-
-        public bool IsSavings(string AccountId)
-        {
-            return _context.Accounts.Find(AccountId).Descriminator == "Savings";
         }
 
         public async Task<string> AddTransaction(string From, string AccountId, string Type, double Amount)

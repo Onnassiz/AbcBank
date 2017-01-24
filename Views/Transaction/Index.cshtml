@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AbcBank.Models.TransactionJoinView>
+﻿@model IEnumerable<TransactionJoinView>
 
 @{
     ViewBag.Title = "Transactions";
@@ -18,11 +18,29 @@
         <li>@Html.ActionLink("Set Savings Interest", "Credit", "Credit")</li>
     </ul>
 </div>
+<br/>
+<p>
+    <a href="#" id="resetSavingsCount">Reset Savings Monthly Counts</a><br/>
+    <a href="#" id="resetDailyCount">Reset Daily Counts</a>
+</p>
 
+
+@if (TempData["ResponseCredit"] != null)
+{
+    <div class="alert alert-success">
+         Credit operation was successfull click <a href="@TempData["ResponseCredit"]">here</a> to veiw your transaction details.
+    </div>
+}
+@if (TempData["ResponseDebit"] != null)
+{
+    <div class="alert alert-success">
+         Debit operation was successfull click <a href="@TempData["ResponseDebit"]">here</a> to veiw your transaction details.
+    </div>
+}
 @if (TempData["Response"] != null)
 {
     <div class="alert alert-success">
-        @Html.Raw(TempData["Response"].ToString())
+        @TempData["Response"].ToString()
     </div>
 }
 <br/><br/>
@@ -32,7 +50,7 @@
         <th>Account Name</th>
         <th>Account Number</th>
         <th>Amount</th>
-        <th>Type</th>
+        <th>By</th>
         <th>From</th>
         <th>Personel</th>
         <th></th>
@@ -63,7 +81,74 @@
     }
 </table>
 
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function() {
+                $('#resetSavingsCount').click(
+                    function () {
+                        $('#resetModal').modal({
+                            show: true
+                        });
+                    });
+                $('.resetProceed').click(
+                    function () {
+                        $(this).attr('disabled','disabled');
+                        window.location.replace('/Transaction/ResetSavings');
+                    }
+                );
+                $('#resetDailyCount').click(
+                    function () {
+                        $('#resetDailyModal').modal({
+                            show: true
+                        });
+                    });
+                $('.resetDailyProceed').click(
+                    function () {
+                        $(this).attr('disabled','disabled');
+                        window.location.replace('/Transaction/ResetDailyAmount');
+                    }
+                );
+            }
+        );
+    </script>
+}
 
+<div class="modal fade" tabindex="-1" role="dialog" id="resetModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to rest all savings account monthly counts?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button data="resetProceed" type="button" class="btn btn-primary resetProceed">Reset</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="resetDailyModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to rest all daily withdrawal amounts?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button data="resetProceed" type="button" class="btn btn-primary resetDailyProceed">Reset</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 

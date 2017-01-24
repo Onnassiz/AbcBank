@@ -11,11 +11,9 @@ namespace AbcBank.Controllers
     public class TransactionController : Controller
     {
         private readonly MyDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public TransactionController(MyDbContext context, UserManager<ApplicationUser> userManager)
+        public TransactionController(MyDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -69,22 +67,35 @@ namespace AbcBank.Controllers
             return View(model);
         }
 
-        public async Task AddTransaction(string From, string AccountId, string Type, double Amount, string Description)
+        public bool IsSavings(string AccountId)
         {
-            var User = await _userManager.GetUserAsync(HttpContext.User);
-            var person = _context.Persons.FirstOrDefault(x => x.Email == User.Email);
-            Transaction transaction = new Transaction
+            return _context.Accounts.Find(AccountId).Descriminator == "Savings";
+        }
+
+        public IActionResult ResetSavings()
+        {
+            var savings = _context.Accounts.OfType<Savings>();
+            foreach (var item in savings)
             {
-                DateCreated = DateTime.Now,
-                Type = Type,
-                Amount = Amount,
-                AccountId = AccountId,
-                PersonId = person.Id,
-                Description = Description,
-                From = From
-            };
-            _context.Transactions.Add(transaction);
+                item.MonthlyCount = 0;
+                _context.Accounts.Update(item);
+            }
             _context.SaveChanges();
+            TempData["Response"] = "All savings monthly withdrawal counts have been reset.";
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ResetDailyAmount()
+        {
+            var accounts = _context.Accounts.ToList();
+            foreach (var item in accounts)
+            {
+                item.DailyOut = 0.00;
+                _context.Accounts.Update(item);
+            }
+            _context.SaveChanges();
+            TempData["Response"] = "Daily withdrawal sums have been reset.";
+            return RedirectToAction("Index");
         }
     }
 }

@@ -16,6 +16,12 @@
         @TempData["Response"].ToString()
     </div>
 }
+@if (TempData["ResponseSuccess"] != null)
+{
+    <div class="alert alert-success">
+        Account successfully created. Click <a href="@TempData["ResponseSuccess"].ToString()">here</a> to complete account setup.
+    </div>
+}
 
 <table class="table table-hover">
     <tr>

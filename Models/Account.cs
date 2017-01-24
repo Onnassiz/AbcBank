@@ -29,6 +29,8 @@ namespace AbcBank.Models
 
         public double DailyIn { get; set; }
 
+        public double DailyOut { get; set; }
+
         public bool IsActive { get; set; }
 
         [Display(Name = "Joint Account?")]

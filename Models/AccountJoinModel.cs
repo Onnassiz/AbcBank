@@ -18,5 +18,6 @@
         public double OverdraftInterestRate { get; set; }
         public double InterestRate { get; set; }
         public int MonthlyLimit { get; set; }
+        public double DailyOut { get; set; }
     }
 }

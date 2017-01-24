@@ -96,7 +96,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Balance, "Main Balance:", new { @class = "col-md-2 control-label" })
         <div class="col-md-9">
-            <span>&#163</span>@Model.Balance
+            <span>&#163</span>@Model.Balance.ToString("F2")
         </div>
     </div>
     @if (Model.Descriminator == "Current")
@@ -127,13 +127,13 @@
         <div class="form-group">
             @Html.LabelFor(m => m.MonthlyCount, "Monthly Withdrawal Count:", new { @class = "col-md-2 control-label" })
             <div class="col-md-9">
-                @ViewBag.MonthlyCount times
+                @ViewBag.MonthlyCount<span>x</span>
             </div>
         </div><br/><br>
         <div class="form-group">
             @Html.LabelFor(m => m.MonthlyLimit, "Monthly Withdrawal Limit:", new { @class = "col-md-2 control-label" })
             <div class="col-md-9">
-                @Model.MonthlyLimit times
+                @Model.MonthlyLimit<span>x</span>
             </div>
         </div><br/><br/>
         <div class="form-group">
@@ -143,6 +143,13 @@
             </div>
         </div><br/>
     }
+    <br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DailyOut, "Current Day Withdrawal:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            <span>&#163</span>@Model.DailyOut.ToString("F2")
+        </div>
+    </div>
 </div>
 <h2>Operations</h2><hr/>
 <div class="container">
@@ -182,7 +189,7 @@
                             show: true
                         });
                     });
-                $('.continueActivate').click(
+                $('.continueClose').click(
                     function () {
                         $(this).attr('disabled','disabled');
                         var id = $(this).attr('data');
@@ -224,7 +231,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button data="@Model.Id" type="button" class="btn btn-primary continueActivate">Close</button>
+                <button data="@Model.Id" type="button" class="btn btn-primary continueClose">Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
