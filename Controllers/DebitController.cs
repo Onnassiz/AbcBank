@@ -77,7 +77,11 @@ namespace AbcBank.Controllers
             }
             else
             {
-                DebitCurrent(Id, Amount);
+                if (!DebitCurrent(Id, Amount))
+                {
+                    TempData["Error"] = "Insufficient Balance";
+                    return RedirectToAction("Target", new {id = Id});
+                }
             }
 
             var transId = await AddTransaction( From, Id, "Debit", Amount);
@@ -101,9 +105,22 @@ namespace AbcBank.Controllers
             return false;
         }
 
-        private void DebitCurrent(string Id, double Amount)
+        private bool DebitCurrent(string Id, double Amount)
         {
-
+            if (!HasOverdraft(Id) && SufficientBalance(Id, Amount))
+            {
+                var account = _context.Accounts.OfType<Current>().FirstOrDefault(x => x.Id == Id);
+                var balance = account.Balance - Amount;
+                account.OverDraft = balance < 0 ? balance * -1 : 0;
+                account.Balance = balance < 0
+                    ? Math.Round(0 - ((balance * -1 * account.OverdraftInterestRate) / 100 + (balance * -1)), 2)
+                    : Math.Round(account.Balance - Amount, 2);
+                account.DailyOut += Amount;
+                _context.Accounts.Update(account);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         private bool SufficientBalance(string Id, double Amount)
@@ -151,6 +168,11 @@ namespace AbcBank.Controllers
         {
             var account = _context.Accounts.Find(Id);
             return account.DailyOut + Amount > account.DailyLimit;
+        }
+
+        private bool HasOverdraft(string Id)
+        {
+            return _context.Accounts.Find(Id).Balance < 0;
         }
     }
 }

@@ -92,8 +92,9 @@ namespace AbcBank.Controllers
 
         public void CreditCurrent(string AccountId, double Amount)
         {
-            var account = _context.Accounts.Find(AccountId);
+            var account = _context.Accounts.OfType<Current>().FirstOrDefault(x => x.Id == AccountId);
             account.Balance += Amount;
+            account.OverDraft = account.Balance + Amount > 0 ? 0 : account.OverDraft;
             _context.Accounts.Update(account);
             _context.SaveChanges();
         }
