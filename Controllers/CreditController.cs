@@ -40,12 +40,12 @@ namespace AbcBank.Controllers
 
         public IActionResult Target(string Id, string From, string Amount)
         {
+            var abcAccountController = new AbcAccountController(_context);
+            ViewBag.Holders = abcAccountController.GetHolders(Id);
             if (Amount != null && From != null )
             {
                 double Number;
                 var parse = Double.TryParse(Amount, out Number);
-                var abcAccountController = new AbcAccountController(_context);
-                ViewBag.Holders = abcAccountController.GetHolders(Id);
 
                 if (!abcAccountController.HasHolder(Id))
                 {

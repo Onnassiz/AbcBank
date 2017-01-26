@@ -101,9 +101,10 @@ namespace AbcBank
 
                 routes.MapRoute(
                     "CreditTask",                                              // Route name
-                    "{controller}/{action}/{id}/{from?}/{amount}",                           // URL with parameters
-                    new { controller = "Home", action = "Index", id = "", from = "", amount = "" }  // Parameter defaults
+                    "{controller}/{action}/{id}/{id2}/{id3}",                           // URL with parameters
+                    new { controller = "Home", action = "Index", id = "", id2 = "", id3 = "" }  // Parameter defaults
                 );
+
             });
 
 //            SampleData.Initialize(app.ApplicationServices);

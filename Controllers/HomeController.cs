@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 using AbcBank.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.Kestrel.Internal.Networking;
 
 namespace AbcBank.Controllers
 {
@@ -17,6 +13,7 @@ namespace AbcBank.Controllers
         {
             _signInManager = signInManager;
         }
+
         public IActionResult Index()
         {
             if (_signInManager.IsSignedIn(User))
@@ -26,23 +23,9 @@ namespace AbcBank.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public ValidationResult AccountExists(string account)
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
+            return new ValidationResult("You are not mad");
         }
     }
 }

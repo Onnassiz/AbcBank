@@ -1,0 +1,57 @@
+﻿@model Transfer
+
+@{
+    ViewBag.Title = "Credit Account";
+}
+
+<h2>Credit Transactions</h2><hr/>
+<p>
+    <a href="/Transaction"><i class="fa fa-arrow-circle-left"></i> Transactions</a>
+</p>
+
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"].ToString()
+    </div>
+}
+
+
+@using (Html.BeginForm("Index", "Transfer", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form"}))
+{
+    <h3>Account Number and Sort Code</h3><hr/>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PrincipalAccount, "Principal Account:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.PrincipalAccount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PrincipalAccount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReceivingAccount, "Receiving Account:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.ReceivingAccount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ReceivingAccount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-6 col-md-2">
+            <input type="submit" value="Find" class="btn btn-default form-control"/>
+        </div>
+    </div>
+}
+
+
+
+

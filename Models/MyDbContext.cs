@@ -5,10 +5,14 @@ namespace AbcBank.Models
 {
     public class MyDbContext : DbContext
     {
-        public MyDbContext(DbContextOptions<MyDbContext> options)
-            : base(options)
-        { }
+//        public MyDbContext(DbContextOptions<MyDbContext> options)
+//            : base(options)
+//        { }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql(@"Server=127.0.0.1;Database=abc_bank;User Id=postgres;Password=;");
+        }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<BankBranch> BankBranches { get; set; }
         public DbSet<Person> Persons { get; set; }
