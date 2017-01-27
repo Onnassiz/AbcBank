@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AbcBank.Data;
 using AbcBank.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
+
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager, Banker")]
     public class CustomerController:Controller
     {
         private readonly MyDbContext _context;
@@ -101,7 +104,7 @@ namespace AbcBank.Controllers
                 {
                     _context.SaveChanges();
                     await CreateAccount(customer.Email);
-                    await SetRole(customer.Email, "Banker");
+                    await SetRole(customer.Email, "Customer");
                     await SendAuthMail(customer.Email, customer.FullName);
                 }
                 catch (DbUpdateException ex)
@@ -219,6 +222,7 @@ namespace AbcBank.Controllers
             TempData["Response"] = "Please check your email.";
         }
 
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(string Id)
         {
             var user = _context.Persons.OfType<Customer>().FirstOrDefault(x => x.Id == Id);

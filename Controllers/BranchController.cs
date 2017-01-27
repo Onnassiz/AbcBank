@@ -10,6 +10,7 @@ using Npgsql;
 
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager, Banker")]
     public class BranchController : Controller
     {
         private readonly MyDbContext _context;
@@ -80,6 +81,7 @@ namespace AbcBank.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Manager")]
         public IActionResult Delete(string Id)
         {
             _context.BankBranches.Remove(_context.BankBranches.Find(Id));

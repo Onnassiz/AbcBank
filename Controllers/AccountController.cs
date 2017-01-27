@@ -131,21 +131,21 @@ namespace AbcBank.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult RegisterRole()
-        {
-            ViewBag.Name = new SelectList(_context.Roles.ToList(), "Name", "Name");
-            ViewBag.UserName = new SelectList(_context.Users.ToList(), "UserName", "UserName");
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> RegisterRole(RegisterViewModel model, ApplicationUser user)
-        {
-            var userId = _context.Users.FirstOrDefault(i => i.UserName == user.UserName);
-            await _userManager.AddToRoleAsync(userId, "Administrator");
-            return RedirectToAction("Index", "Roles");
-        }
+//        [HttpGet]
+//        public IActionResult RegisterRole()
+//        {
+//            ViewBag.Name = new SelectList(_context.Roles.ToList(), "Name", "Name");
+//            ViewBag.UserName = new SelectList(_context.Users.ToList(), "UserName", "UserName");
+//            return View();
+//        }
+//
+//        [HttpPost]
+//        public async Task<ActionResult> RegisterRole(RegisterViewModel model, ApplicationUser user)
+//        {
+//            var userId = _context.Users.FirstOrDefault(i => i.UserName == user.UserName);
+//            await _userManager.AddToRoleAsync(userId, "Administrator");
+//            return RedirectToAction("Index", "Roles");
+//        }
 
 
         //
@@ -320,6 +320,7 @@ namespace AbcBank.Controllers
 
         //
         // GET: /Account/ResetPassword
+        [AllowAnonymous]
         public async Task<IActionResult> CreatePasswordFirst(string userId, string code = null)
         {
             await _signInManager.SignOutAsync();

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Linq;
 using AbcBank.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
+
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager, Banker")]
     public class AddressController : Controller
     {
         private readonly MyDbContext _context;
@@ -73,6 +76,7 @@ namespace AbcBank.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Manager")]
         public IActionResult Delete(string Id)
         {
             _context.Addresses.Remove(_context.Addresses.FirstOrDefault(i => i.Id == Id));

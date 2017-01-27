@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AbcBank.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager, Banker")]
     public class CreditController : Controller
     {
         private readonly MyDbContext _context;
@@ -117,5 +119,6 @@ namespace AbcBank.Controllers
             _context.SaveChanges();
             return transaction.Id;
         }
+
     }
 }

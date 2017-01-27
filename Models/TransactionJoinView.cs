@@ -13,5 +13,7 @@ namespace AbcBank.Models
         public string From { get; set; }
         public string Personnel { get; set; }
         public string Description { get; set; }
+        public string Receiver { get; set; }
+        public string ReceiverAccountNumber { get; set; }
     }
 }

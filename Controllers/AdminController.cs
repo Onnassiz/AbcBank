@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AbcBank.Data;
 using AbcBank.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Npgsql;
 
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class AdminController : Controller
     {
         private readonly MyDbContext _context;

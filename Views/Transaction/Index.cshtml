@@ -14,14 +14,14 @@
     <ul class="dropdown-menu" aria-labelledby="drop4">
         <li>@Html.ActionLink("Credit", "Index", "Credit")</li>
         <li>@Html.ActionLink("Debit", "Index", "Debit")</li>
-        <li>@Html.ActionLink("Fund Transfer", "Index", "Transfer")</li><hr/>
-        <li>@Html.ActionLink("Set Savings Interest", "Credit", "Credit")</li>
+        <li>@Html.ActionLink("Fund Transfer", "Index", "Transfer")</li>
     </ul>
 </div>
 <br/>
 <p>
     <a href="#" id="resetSavingsCount">Reset Savings Monthly Counts</a><br/>
-    <a href="#" id="resetDailyCount">Reset Daily Counts</a>
+    <a href="#" id="resetDailyCount">Reset Daily Counts</a><br/>
+    <a href="#" id="">Set Monthly Interest Rate</a>
 </p>
 
 
@@ -35,6 +35,12 @@
 {
     <div class="alert alert-success">
          Debit operation was successfull click <a href="@TempData["ResponseDebit"]">here</a> to veiw your transaction details.
+    </div>
+}
+@if (TempData["ResponseTransfer"] != null)
+{
+    <div class="alert alert-success">
+         Tranfer operation was successfull click <a href="@TempData["ResponseTransfer"]">here</a> to veiw your transaction details.
     </div>
 }
 @if (TempData["Response"] != null)

@@ -2,15 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using AbcBank.Controllers;
 using AbcBank.Models;
-using AbcBank.Models.ManageViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using NuGet.Protocol.Core.v3;
 
 namespace AbcBank.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -24,13 +23,56 @@ namespace AbcBank.Controllers
             _context = context;
         }
 
+
         public async Task<IActionResult> Index()
         {
             var User = await GetCurrentUserAsync();
-            var Rile = await _userManager.GetRolesAsync(User);
+            var Role = await _userManager.GetRolesAsync(User);
+
             await SetSeedData();
-            ViewBag.Role = User.Email;
-            return View();
+            var Id = _context.Persons.FirstOrDefault(x => x.Email == User.Email).Id;
+
+            if (await _userManager.IsInRoleAsync(User, "Manager"))
+            {
+                var result = _context.Persons.Find(Id);
+
+                var model = new PersonJoinView()
+                {
+                    FullName = result.FullName,
+                    Email = result.Email,
+                    Sex = result.Sex,
+                    BranchName = "",
+                    MarritalStatus = result.MarritalStatus,
+                    DateOfBirth = result.DateOfBirth,
+                    Age = result.Age,
+                    Address = "",
+                    Role = Role
+                };
+                return View(model);
+            }
+            else
+            {
+                var result = _context.Persons
+                    .Join(_context.BankBranches,
+                        x => x.BankBranchId, d => d.Id,
+                        (person, branch) => new {person, branch})
+                    .Join(_context.Addresses, x => x.person.AddressId, d => d.Id,
+                        (person, address) => new {person, address}).FirstOrDefault(x => x.person.person.Id == Id);
+
+                var model = new PersonJoinView()
+                {
+                    FullName = result.person.person.FullName,
+                    Email = result.person.person.Email,
+                    Sex = result.person.person.Sex,
+                    BranchName = result.person.branch.BranchName,
+                    MarritalStatus = result.person.person.MarritalStatus,
+                    DateOfBirth = result.person.person.DateOfBirth,
+                    Age = result.person.person.Age,
+                    Address = result.address.ToString,
+                    Role = Role
+                };
+                return View(model);
+            }
         }
 
         public Task<ApplicationUser> GetCurrentUserAsync()
@@ -51,7 +93,7 @@ namespace AbcBank.Controllers
                     await _userManager.AddToRoleAsync(User, "Manager");
                 }
 
-                if (!_context.Persons.Where(x => x.Email == User.Email).Any())
+                if (!_context.Persons.Any(x => x.Email == User.Email))
                 {
                     Administrator person = new Administrator
                     {
@@ -72,6 +114,5 @@ namespace AbcBank.Controllers
                 }
             }
         }
-
     }
 }

@@ -1,15 +1,10 @@
-﻿@{
+﻿@model PersonJoinView
+@{
     ViewBag.Title = "Dashboard";
-    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
 }
 
-@*<p>@ViewBag.Role</p>*@
-
-@foreach (var role in ViewBag.Role)
-{
-    @role.ToString()
-}
-
+<h2>Abc Bank - Current User Profile</h2>
+<hr class="intro-divider"/>
 @if (TempData["Response"] != null)
 {
     <div class="alert alert-success">
@@ -17,4 +12,59 @@
     </div>
 }
 
+<h3>Biodata</h3>
+
+<div class="container">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, "Email:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.Email
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Sex, "Sex:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.Sex
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.MarritalStatus, "Marrital Status:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.MarritalStatus
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateOfBirth, "Date of Birth:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.DateOfBirth.ToString("MMMM dd, yyyy")
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Age, "Age:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.Age
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.BranchName, "Branch:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.BranchName
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address, "Address:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.Address
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Role, "Roles:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @foreach (var item in Model.Role)
+            {
+                <span>@item</span><br/>
+            }
+        </div>
+    </div>
+</div>
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AbcBank.Models
 {
@@ -16,5 +18,6 @@ namespace AbcBank.Models
         public string LastName { get; set; }
         public string Address { get; set; }
         public string Banker { get; set; }
+        public IList<string> Role { get; set; }
     }
 }

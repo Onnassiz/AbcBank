@@ -1,0 +1,87 @@
+﻿@model TransactionJoinView
+
+@{
+    ViewBag.Title = "Transfer Transaction" + Model.AccountName;
+}
+
+<h2>Transaction on (@Model.AccountName - @Model.AccountNumber)</h2>
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+
+<p>
+    <a href="/Transaction"><i class="fa  fa-arrow-circle-left"></i> Transactions</a>
+</p><hr/>
+
+<div class="container">
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateCreated, "Transaction Date:", new { @class = "col-md-2 control-label" })
+        <div class="col-md-9">
+            @Model.DateCreated.ToString("dddd, MMMM dd, yyyy h:mm tt")
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountName, "Account Name:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @Model.AccountName
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountNumber, "Account Number:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @Model.AccountNumber
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Amount, "Amount:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            <span>&#163</span>@Model.Amount
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.From, "By:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @Model.From
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Type, "Type:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @if (Model.Type == "Credit")
+            {
+                <span style="color: #3c763d">Credit</span>
+            }
+            else
+            {
+                <span>Debit</span>
+            }
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Personnel, "Personnel:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @Model.Personnel
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, "Description:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @Model.Description
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Receiver, "Receiver:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @Model.Receiver
+        </div>
+    </div><br/>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReceiverAccountNumber, "Receiver's Account:", new {@class = "col-md-2 control-label"})
+        <div class="col-md-9">
+            @Model.ReceiverAccountNumber
+        </div>
+    </div><br/>
+</div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AbcBank.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Npgsql;
 
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager, Banker")]
     public class AbcAccountController:Controller
     {
         private readonly MyDbContext _context;
@@ -98,6 +100,7 @@ namespace AbcBank.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Manager")]
         public IActionResult Delete(string Id)
         {
             _context.Accounts.Remove(_context.Accounts.Find(Id));

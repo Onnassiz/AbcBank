@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AbcBank.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager, Banker")]
     public class DebitController : Controller
     {
         private readonly MyDbContext _context;
@@ -105,7 +107,7 @@ namespace AbcBank.Controllers
             return false;
         }
 
-        private bool DebitCurrent(string Id, double Amount)
+        public bool DebitCurrent(string Id, double Amount)
         {
             if (!HasOverdraft(Id) && SufficientBalance(Id, Amount))
             {

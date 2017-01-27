@@ -10,11 +10,11 @@
   <h4>Change your account settings</h4><hr />
 
   <div class="row">
-    <div class="col-lg-offset-2 col-md-1"><b>Password:</b></div>
+    <div class="col-md-1"><b>Password:</b></div>
     <div class="col-md-8"><a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Change</a></div>
   </div><br/>
   <div class="row">
-    <div class="col-lg-offset-2 col-md-1"><b>Roles:</b></div>
+    <div class="col-md-1"><b>Roles:</b></div>
     <div class="col-md-8">
       <ul>
         @foreach (var role in ViewBag.Roles)
