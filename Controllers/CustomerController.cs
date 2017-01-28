@@ -99,23 +99,11 @@ namespace AbcBank.Controllers
                 customer.DateCreated = DateTime.Now;
                 customer.DateUpdated = DateTime.Now;
                 _context.Persons.Add(customer);
+                _context.SaveChanges();
+                await CreateAccount(customer.Email);
+                await SetRole(customer.Email, "Customer");
+                await SendAuthMail(customer.Email, customer.FullName);
 
-                try
-                {
-                    _context.SaveChanges();
-                    await CreateAccount(customer.Email);
-                    await SetRole(customer.Email, "Customer");
-                    await SendAuthMail(customer.Email, customer.FullName);
-                }
-                catch (DbUpdateException ex)
-                {
-                    var innerException = ex.InnerException as PostgresException;
-                    if (innerException != null && innerException.Code == "23505")
-                    {
-                        ModelState.AddModelError(string.Empty, "Email already exists on a different user.");
-                        return View();
-                    }
-                }
                 TempData["Response"] = "Record successfully created. Enter admin's address to continue";
                 return RedirectToAction("Address", new {id = customer.Id});
             }
@@ -133,7 +121,7 @@ namespace AbcBank.Controllers
         {
             ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
 
-            Customer person = _context.Persons.OfType<Customer>().FirstOrDefault(x => x.Id == Id);
+            var person = _context.Persons.OfType<Customer>().FirstOrDefault(x => x.Id == Id);
             var BankBranchId = person.BankBranchId;
 
             var MinCount = _context.Persons.OfType<Administrator>()

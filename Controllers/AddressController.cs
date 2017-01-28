@@ -2,9 +2,9 @@
 using System.Linq;
 using AbcBank.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 
 namespace AbcBank.Controllers
@@ -41,24 +41,11 @@ namespace AbcBank.Controllers
                 address.DateUpdated = DateTime.Now;
                 address.ToString = ToString;
                 _context.Addresses.Add(address);
-
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    var innerException = ex.InnerException as PostgresException;
-                    if (innerException != null && innerException.Code == "23505")
-                    {
-                        ModelState.AddModelError(string.Empty, "Postal Code already exists on a different address.");
-                        return View();
-                    }
-                }
+                _context.SaveChanges();
 
                 if (Id != null)
                 {
-                    Person person = _context.Persons.Find(Id);
+                    var person = _context.Persons.Find(Id);
                     person.AddressId = address.Id;
                     person.DateUpdated = DateTime.Now;
                     _context.Persons.Update(person);
@@ -69,6 +56,10 @@ namespace AbcBank.Controllers
                         TempData["Response"] = "Enrollment for "+ person.FullName + " is complete. Account password creation link has also been sent to " + person.FullName + "'s email";
                         return RedirectToAction("Index", "Admin");
                     }
+                    TempData["Response"] = "Enrollment for " + person.FullName +
+                                           " is complete. Account password creation link has also been sent to " +
+                                           person.FullName + "'s email";
+                    return RedirectToAction("Index", "Customer");
                 }
                 TempData["Response"] = "New address successfully created";
                 return RedirectToAction("Index");
@@ -88,7 +79,6 @@ namespace AbcBank.Controllers
         [HttpGet]
         public IActionResult Edit(string Id)
         {
-//            ViewBag.Data = _context.Addresses.FirstOrDefault(i => i.Id == Id);
             return View(_context.Addresses.Find(Id));
         }
 
@@ -100,27 +90,25 @@ namespace AbcBank.Controllers
                 var ToString = address.HouseNumber + " " + address.Street + ", " + address.Town + ", " +
                                address.County + ", " + address.PostCode + ".";
                 address.DateUpdated = DateTime.Now;
-                address.DateCreated = DateTime.Parse("2017-01-09 08:46:05");
                 address.ToString = ToString;
-                _context.Addresses.Update(address);
-//                _context.Entry(address).State = EntityState.Modified;
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    var innerException = ex.InnerException as PostgresException;
-                    if (innerException != null && innerException.Code == "23505")
-                    {
-                        ModelState.AddModelError(string.Empty, "Postal Code already exists on a different address.");
-                        return View();
-                    }
-                }
+                _context.Entry(address).State = EntityState.Modified;
+                _context.SaveChanges();
                 TempData["Response"] = "Address update is sucessful";
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public string GetId()
+        {
+            var url = HttpContext.Request.Path.ToString();
+            string[] route = url.Split('/');
+            string last = "";
+            foreach (var item in route)
+            {
+                last = item;
+            }
+            return last;
         }
     }
 }

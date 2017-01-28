@@ -30,7 +30,7 @@ namespace AbcBank.Controllers
         {
             if (ModelState.IsValid)
             {
-                var transactionController = new TransactionController(_context);
+                var transactionController = new TransactionController(_context, _userManager);
                 var fromId = _context.Accounts.FirstOrDefault(x => x.AccountNumber == transfer.PrincipalAccount).Id;
                 var toId = _context.Accounts.FirstOrDefault(x => x.AccountNumber == transfer.ReceivingAccount).Id;
                 if (transactionController.IsSavings(fromId))
@@ -76,7 +76,7 @@ namespace AbcBank.Controllers
             var account = new Account();
             var debitController = new DebitController(_context, _userManager);
             var creditController = new CreditController(_context, _userManager);
-            var transactionController = new TransactionController(_context);
+            var transactionController = new TransactionController(_context, _userManager);
             if (Amount > account.DailyLimit)
             {
                 TempData["Error"] = "Maximal transfet limit exceeded";

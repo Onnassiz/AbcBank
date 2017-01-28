@@ -1,0 +1,15 @@
+﻿@model IEnumerable<TransactionJoinView>
+
+@{
+    ViewBag.Title = "Transactions";
+}
+<h2>Select Account</h2><hr/>
+
+@foreach (var item in Model)
+{
+    <div>
+        <p>
+            <a href="/Transaction/Holder/@item.Id" style="font-size: 16px">@item.AccountName (@item.AccountNumber)</a>
+        </p>
+    </div>
+}

@@ -69,7 +69,7 @@ namespace AbcBank.Controllers
         public async Task<IActionResult> Task(string Id, string From, double Amount)
         {
             var transId = await AddTransaction( From, Id, "Credit", Amount);
-            var transaction = new TransactionController(_context);
+            var transaction = new TransactionController(_context, _userManager);
             if (transaction.IsSavings(Id))
             {
                 CreditSavings(Id, Amount);

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<TransactionJoinView>
+
+@{
+    ViewBag.Title = "Transactions";
+}
+
+<h2>@ViewBag.AccountName - @ViewBag.AccountNumber</h2><hr/>
+
+<h3>Balance: <span style="color: #00CAFB"><span>&#163</span>@ViewBag.Balance.ToString("F2")</span></h3><hr/>
+
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+<p>
+    @if (User.IsInRole("Manager") || User.IsInRole("Banker"))
+    {
+        <a href="/Credit/Target/@ViewBag.Id">Credit</a><br/>
+        <a href="/Debit/Target/@ViewBag.Id">Debit</a><br/>
+    }
+    <a href="#">Transfer</a>
+</p>
+
+<br/><br/>
+<table class="table table-hover">
+    <tr>
+        <th>Transaction Date</th>
+        <th>Account Name</th>
+        <th>Account Number</th>
+        <th>Amount</th>
+        <th>By</th>
+        <th>From</th>
+        <th>Personel</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.DateCreated.ToString("dddd, MMMM dd, yyyy h:mm tt")</td>
+            <td>@item.AccountName</td>
+            <td>@item.AccountNumber</td>
+            <td><span>&#163</span>@item.Amount</td>
+            <td>
+                @if (item.Type == "Credit")
+                {
+                    <span style="color: #3c763d">Credit</span>
+                }
+                else
+                {
+                    <span style="color: red">Debit</span>
+                }
+            </td>
+            <td>@item.From</td>
+            <td>@item.Personnel</td>
+            <td>
+                <a href="/Transaction/View/@item.Id" title="view"><i class="fa fa-arrow-circle-right"></i></a>
+            </td>
+        </tr>
+    }
+</table>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function() {
+                $('#resetSavingsCount').click(
+                    function () {
+                        $('#resetModal').modal({
+                            show: true
+                        });
+                    });
+                $('.resetProceed').click(
+                    function () {
+                        $(this).attr('disabled','disabled');
+                        window.location.replace('/Transaction/ResetSavings');
+                    }
+                );
+                $('#resetDailyCount').click(
+                    function () {
+                        $('#resetDailyModal').modal({
+                            show: true
+                        });
+                    });
+                $('.resetDailyProceed').click(
+                    function () {
+                        $(this).attr('disabled','disabled');
+                        window.location.replace('/Transaction/ResetDailyAmount');
+                    }
+                );
+            }
+        );
+    </script>
+}

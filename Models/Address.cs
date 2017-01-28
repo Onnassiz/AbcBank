@@ -21,6 +21,7 @@ namespace AbcBank.Models
         public string County { get; set; }
 
         [Required]
+        [PostCodeUnique]
         public string PostCode { get; set; }
 
         public string ToString { get; set; }

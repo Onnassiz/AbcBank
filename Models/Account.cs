@@ -13,6 +13,7 @@ namespace AbcBank.Models
         public string AccountName { get; set; }
 
         [Required]
+        [AccountUnique]
         public string AccountNumber { get; set; }
 
         public string SortCode { get; set; }

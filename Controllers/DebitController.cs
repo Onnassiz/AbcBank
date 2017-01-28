@@ -62,7 +62,7 @@ namespace AbcBank.Controllers
 
         public async Task<IActionResult> Task(string Id, string From, double Amount)
         {
-            var transactionController = new TransactionController(_context);
+            var transactionController = new TransactionController(_context, _userManager);
 
             if (transactionController.IsSavings(Id))
             {
@@ -127,7 +127,7 @@ namespace AbcBank.Controllers
 
         private bool SufficientBalance(string Id, double Amount)
         {
-            var transactionController = new TransactionController(_context);
+            var transactionController = new TransactionController(_context, _userManager);
             var balance = _context.Accounts.Find(Id).Balance;
             if (transactionController.IsSavings(Id))
             {

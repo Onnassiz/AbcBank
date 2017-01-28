@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace AbcBank.Controllers
 {
@@ -82,19 +81,7 @@ namespace AbcBank.Controllers
                     _context.Accounts.Add(current);
                     TempData["ResponseSuccess"] = "/AbcAccount/Settings/" + current.Id;
                 }
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    var innerException = ex.InnerException as PostgresException;
-                    if (innerException != null && innerException.Code == "23505")
-                    {
-                        ModelState.AddModelError(string.Empty, "Account number already in use.");
-                        return View();
-                    }
-                }
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View();

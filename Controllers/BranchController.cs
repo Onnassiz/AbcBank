@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AbcBank.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace AbcBank.Controllers
 {
-    [Authorize(Roles = "Manager, Banker")]
+    [Authorize(Roles = "Manager")]
     public class BranchController : Controller
     {
         private readonly MyDbContext _context;
@@ -25,8 +23,8 @@ namespace AbcBank.Controllers
             var result = _context.BankBranches.Join(_context.Addresses, e => e.AddressId, d => d.Id,
                     (bankBranch, address) => new
                     {
-                        Id = bankBranch.Id,
-                        SortCode = bankBranch.SortCode,
+                        bankBranch.Id,
+                        bankBranch.SortCode,
                         BankBranch = bankBranch.BranchName,
                         BankAddress = address.ToString
                     }
@@ -62,19 +60,7 @@ namespace AbcBank.Controllers
             {
                 bankBranch.BranchName = "Abc Bank - " + bankBranch.BranchName;
                 _context.BankBranches.Add(bankBranch);
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    var innerException = ex.InnerException as PostgresException;
-                    if (innerException != null && innerException.Code == "23505")
-                    {
-                        ModelState.AddModelError(string.Empty, "Bank branch or sort code already in use");
-                        return View();
-                    }
-                }
+                _context.SaveChanges();
                 TempData["Response"] = "Bank branch successfully created";
                 return RedirectToAction("Index");
             }
@@ -86,7 +72,7 @@ namespace AbcBank.Controllers
         {
             _context.BankBranches.Remove(_context.BankBranches.Find(Id));
             _context.SaveChanges();
-            TempData["Response"] = "Branch Successfully Deleted";
+            TempData["Response"] = "Branch successfully deleted";
             return RedirectToAction("Index");
         }
 
@@ -103,20 +89,8 @@ namespace AbcBank.Controllers
             ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
             if (ModelState.IsValid)
             {
-                _context.BankBranches.Update(bankBranch);
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    var innerException = ex.InnerException as PostgresException;
-                    if (innerException != null && innerException.Code == "23505")
-                    {
-                        ModelState.AddModelError(string.Empty, "Bank branch or sort code already in use");
-                        return View();
-                    }
-                }
+                _context.Entry(bankBranch).State = EntityState.Modified;
+                _context.SaveChanges();
                 TempData["Response"] = "Bank branch successfully updated";
                 return RedirectToAction("Index");
             }

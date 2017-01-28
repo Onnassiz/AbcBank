@@ -4,6 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
 @{
     var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
 }
@@ -49,53 +50,82 @@
           <li style="clear: both">
             <hr class="intro-divider">
           </li>
-          <li class="@if (controllerName == "Dashboard")
-                     {
-                         @Html.Raw("active")
-                     }">
-            @Html.ActionLink("Dashboard", "Index", "Dashboard")
-          </li>
-          <li class="@if (controllerName == "Roles")
-                     {
-                         @Html.Raw("active")
-                     }">
-            @Html.ActionLink("Roles", "Index", "Roles")
-          </li>
-          <li class="@if (controllerName == "Address")
-                     {
-                         @Html.Raw("active")
-                     }">
-            @Html.ActionLink("Address Book", "Index", "Address")
-          </li>
-          <li class="@if (controllerName == "Branch")
-                     {
-                         @Html.Raw("active")
-                     }">
-            @Html.ActionLink("Branches", "Index", "Branch")
-          </li>
-          <li class="@if (controllerName == "Admin")
-                     {
-                         @Html.Raw("active")
-                     }">
-            @Html.ActionLink("Administrators", "Index", "Admin")
-          </li>
-            <li class="@if (controllerName == "Customer")
+            <li class="@if (controllerName == "Dashboard")
                        {
                            @Html.Raw("active")
                        }">
-                @Html.ActionLink("Customers", "Index", "Customer")
+                @Html.ActionLink("Dashboard", "Index", "Dashboard")
             </li>
-            <li class="@if (controllerName == "AbcAccount")
+            @if (this.User.IsInRole("Manager"))
+            {
+                <li class="@if (controllerName == "Roles")
+                           {
+                               @Html.Raw("active")
+                           }">
+                    @Html.ActionLink("Roles", "Index", "Roles")
+                </li>
+            }
+            @if (User.IsInRole("Manager") || User.IsInRole("Banker"))
+            {
+                <li class="@if (controllerName == "Address")
+                           {
+                               @Html.Raw("active")
+                           }">
+                    @Html.ActionLink("Address Book", "Index", "Address")
+                </li>
+            }
+            @if (User.IsInRole("Manager"))
+            {
+                <li class="@if (controllerName == "Branch")
+                           {
+                               @Html.Raw("active")
+                           }">
+                    @Html.ActionLink("Branches", "Index", "Branch")
+                </li>
+            }
+            @if (User.IsInRole("Manager") || User.IsInRole("Banker"))
+            {
+                <li class="@if (controllerName == "Admin")
+                           {
+                               @Html.Raw("active")
+                           }">
+                    @Html.ActionLink("Administrators", "Index", "Admin")
+                </li>
+            }
+
+            @if (User.IsInRole("Manager") || User.IsInRole("Banker"))
+            {
+                <li class="@if (controllerName == "Customer")
+                           {
+                               @Html.Raw("active")
+                           }">
+                    @Html.ActionLink("Customers", "Index", "Customer")
+                </li>
+            }
+
+            @if (User.IsInRole("Manager") || User.IsInRole("Banker"))
+            {
+                <li class="@if (controllerName == "AbcAccount")
+                           {
+                               @Html.Raw("active")
+                           }">
+                    @Html.ActionLink("Accounts", "Index", "AbcAccount")
+                </li>
+            }
+
+            <li class="@if (controllerName == "Transaction" || controllerName == "Credit" || controllerName == "Debit" || controllerName == "Transfer")
                      {
                          @Html.Raw("active")
                      }">
-            @Html.ActionLink("Accounts", "Index", "AbcAccount")
-            <li class="@if (controllerName == "Transaction" || controllerName == "Credit")
-                     {
-                         @Html.Raw("active")
-                     }">
-            @Html.ActionLink("Transaction", "Index", "Transaction")
-          </li>
+                @if (User.IsInRole("Customer"))
+                {
+                    @Html.ActionLink("Transactions", "Customer", "Transaction")
+                }
+                else
+                {
+                    @Html.ActionLink("Transactions", "Index", "Transaction")
+                }
+            </li>
         </ul>
       </div>
       <!-- /#sidebar-wrapper -->

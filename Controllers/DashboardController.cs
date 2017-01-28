@@ -6,6 +6,7 @@ using AbcBank.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace AbcBank.Controllers
 {
@@ -14,25 +15,40 @@ namespace AbcBank.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger _logger;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly MyDbContext _context;
 
-        public DashboardController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, MyDbContext context)
+        public DashboardController(UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager, MyDbContext context,
+            SignInManager<ApplicationUser> signInManager,
+            ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
             _context = context;
+            _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
 
         public async Task<IActionResult> Index()
         {
-            var User = await GetCurrentUserAsync();
-            var Role = await _userManager.GetRolesAsync(User);
+            var CurrentUser = await GetCurrentUserAsync();
+            var Role = await _userManager.GetRolesAsync(CurrentUser);
 
             await SetSeedData();
-            var Id = _context.Persons.FirstOrDefault(x => x.Email == User.Email).Id;
 
-            if (await _userManager.IsInRoleAsync(User, "Manager"))
+            var Id = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).Id;
+
+            if (User.IsInRole("Customer") && !_context.AccountHolders.Any(x => x.PersonId == Id))
+            {
+                await _signInManager.SignOutAsync();
+                _logger.LogInformation(4, "User logged out.");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            if (await _userManager.IsInRoleAsync(CurrentUser, "Manager"))
             {
                 var result = _context.Persons.Find(Id);
 

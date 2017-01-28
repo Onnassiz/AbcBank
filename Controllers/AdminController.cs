@@ -67,15 +67,8 @@ namespace AbcBank.Controllers
         {
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-
-//            List<SelectListItem> AdminType = new List<SelectListItem>();
-//            AdminType.Add(new SelectListItem {Text = "Banker", Value = "Banker"});
-//            AdminType.Add(new SelectListItem {Text = "Teller", Value = "Teller", Selected = true});
-
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
-
             ViewBag.Branch = Branch;
-
             return View();
         }
 
@@ -93,22 +86,10 @@ namespace AbcBank.Controllers
                 administrator.DateUpdated = DateTime.Now;
                 administrator.CustomerCount = 0;
                 _context.Persons.Add(administrator);
-                try
-                {
-                    _context.SaveChanges();
-                    await CreateAccount(administrator.Email);
-                    await SetRole(administrator.Email, "Banker");
-                    await SendAuthMail(administrator.Email, administrator.FullName);
-                }
-                catch (DbUpdateException ex)
-                {
-                    var innerException = ex.InnerException as PostgresException;
-                    if (innerException != null && innerException.Code == "23505")
-                    {
-                        ModelState.AddModelError(string.Empty, "Email already exists on a different user.");
-                        return View();
-                    }
-                }
+                _context.SaveChanges();
+                await CreateAccount(administrator.Email);
+                await SetRole(administrator.Email, "Banker");
+                await SendAuthMail(administrator.Email, administrator.FullName);
                 TempData["Response"] = "Record successfully created. Enter admin's address to continue";
                 return RedirectToAction("Address", new {id = administrator.Id});
             }
@@ -127,7 +108,7 @@ namespace AbcBank.Controllers
         {
             ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
 
-            Person person = _context.Persons.Find(Id);
+            var person = _context.Persons.Find(Id);
             person.AddressId = administrator.AddressId;
             person.DateUpdated = DateTime.Now;
             _context.Persons.Update(person);
@@ -156,11 +137,8 @@ namespace AbcBank.Controllers
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
             ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
-
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
-
             ViewBag.Branch = Branch;
-
             return View(_context.Persons.Find(Id));
         }
 
@@ -176,9 +154,8 @@ namespace AbcBank.Controllers
             if (ModelState.IsValid)
             {
                 ViewBag.Branch = Branch;
-
                 administrator.DateUpdated = DateTime.Now;
-                _context.Persons.Update(administrator);
+                _context.Entry(administrator).State = EntityState.Modified;
                 _context.SaveChanges();
 
                 TempData["Response"] = "Record Successfully Updated";

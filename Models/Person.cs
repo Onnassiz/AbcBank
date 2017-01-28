@@ -47,6 +47,7 @@ namespace AbcBank.Models
 
         [Required]
         [EmailAddress]
+        [EmailUnique]
         public string Email { get; set; }
 
         public string FullName
