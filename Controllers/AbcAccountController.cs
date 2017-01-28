@@ -26,7 +26,6 @@ namespace AbcBank.Controllers
             ).OrderByDescending(x => x.account.DateCreated);
 
             List<AccountJoinModel> model = new List<AccountJoinModel>();
-
             foreach (var item in result)
             {
                 model.Add(new AccountJoinModel()
