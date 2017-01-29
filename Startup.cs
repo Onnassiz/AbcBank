@@ -107,7 +107,8 @@ namespace AbcBank
 
             });
 
-//            SampleData.Initialize(app.ApplicationServices);
+            //Seed database initail user...
+            SampleData.Initialize(app.ApplicationServices);
         }
     }
 }
