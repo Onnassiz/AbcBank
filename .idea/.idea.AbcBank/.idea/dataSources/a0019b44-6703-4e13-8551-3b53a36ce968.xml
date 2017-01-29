@@ -9,8 +9,8 @@
     </database>
     <schema id="3" parent="2" name="public">
       <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2017-01-29.09:27:04.658</IntrospectionTimestamp>
-      <IntrospectionStateNumber>1977</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2017-01-29.10:16:07.193</IntrospectionTimestamp>
+      <IntrospectionStateNumber>1955</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -39,526 +39,285 @@
       <StateNumber>1955</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
     </sequence>
-    <table id="11" parent="3" name="AccountHolders">
-      <ObjectId>18750</ObjectId>
-      <StateNumber>1977</StateNumber>
-    </table>
-    <table id="12" parent="3" name="Accounts">
-      <ObjectId>18703</ObjectId>
-      <StateNumber>1977</StateNumber>
-    </table>
-    <table id="13" parent="3" name="Addresses">
-      <ObjectId>18711</ObjectId>
-      <StateNumber>1977</StateNumber>
-    </table>
-    <table id="14" parent="3" name="AspNetRoleClaims">
+    <table id="11" parent="3" name="AspNetRoleClaims">
       <ObjectId>18568</ObjectId>
       <StateNumber>1955</StateNumber>
     </table>
-    <table id="15" parent="3" name="AspNetRoles">
+    <table id="12" parent="3" name="AspNetRoles">
       <ObjectId>18521</ObjectId>
       <StateNumber>1955</StateNumber>
     </table>
-    <table id="16" parent="3" name="AspNetUserClaims">
+    <table id="13" parent="3" name="AspNetUserClaims">
       <ObjectId>18539</ObjectId>
       <StateNumber>1955</StateNumber>
     </table>
-    <table id="17" parent="3" name="AspNetUserLogins">
+    <table id="14" parent="3" name="AspNetUserLogins">
       <ObjectId>18553</ObjectId>
       <StateNumber>1955</StateNumber>
     </table>
-    <table id="18" parent="3" name="AspNetUserRoles">
+    <table id="15" parent="3" name="AspNetUserRoles">
       <ObjectId>18582</ObjectId>
       <StateNumber>1955</StateNumber>
     </table>
-    <table id="19" parent="3" name="AspNetUserTokens">
+    <table id="16" parent="3" name="AspNetUserTokens">
       <ObjectId>18529</ObjectId>
       <StateNumber>1955</StateNumber>
     </table>
-    <table id="20" parent="3" name="AspNetUsers">
+    <table id="17" parent="3" name="AspNetUsers">
       <ObjectId>18513</ObjectId>
       <StateNumber>1955</StateNumber>
     </table>
-    <table id="21" parent="3" name="BankBranches">
-      <ObjectId>18719</ObjectId>
-      <StateNumber>1977</StateNumber>
-    </table>
-    <table id="22" parent="3" name="Persons">
-      <ObjectId>18732</ObjectId>
-      <StateNumber>1977</StateNumber>
-    </table>
-    <table id="23" parent="3" name="Transactions">
-      <ObjectId>18768</ObjectId>
-      <StateNumber>1977</StateNumber>
-    </table>
-    <table id="24" parent="3" name="__EFMigrationsHistory">
+    <table id="18" parent="3" name="__EFMigrationsHistory">
       <ObjectId>18405</ObjectId>
       <StateNumber>1947</StateNumber>
     </table>
-    <column id="25" parent="11" name="Id">
-      <Position>1</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="26" parent="11" name="AccountId">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="27" parent="11" name="PersonId">
-      <Position>3</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <index id="28" parent="11" name="PK_AccountHolders">
-      <ObjectId>18756</ObjectId>
-      <ColNames>Id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="29" parent="11" name="IX_AccountHolders_AccountId">
-      <ObjectId>18787</ObjectId>
-      <ColNames>AccountId</ColNames>
-    </index>
-    <index id="30" parent="11" name="IX_AccountHolders_PersonId">
-      <ObjectId>18788</ObjectId>
-      <ColNames>PersonId</ColNames>
-    </index>
-    <key id="31" parent="11" name="PK_AccountHolders">
-      <ObjectId>18757</ObjectId>
-      <ColNames>Id</ColNames>
-      <UnderlyingIndexName>PK_AccountHolders</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="32" parent="11" name="FK_AccountHolders_Accounts_AccountId">
-      <ObjectId>18758</ObjectId>
-      <ColNames>AccountId</ColNames>
-      <RefTableName>Accounts</RefTableName>
-      <RefKeyName>PK_Accounts</RefKeyName>
-      <RefColNames>Id</RefColNames>
-    </foreign-key>
-    <foreign-key id="33" parent="11" name="FK_AccountHolders_Persons_PersonId">
-      <ObjectId>18763</ObjectId>
-      <ColNames>PersonId</ColNames>
-      <RefTableName>Persons</RefTableName>
-      <RefKeyName>PK_Persons</RefKeyName>
-      <RefColNames>Id</RefColNames>
-    </foreign-key>
-    <column id="34" parent="12" name="Id">
-      <Position>1</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="35" parent="12" name="AccountName">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="36" parent="12" name="AccountNumber">
-      <Position>3</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="37" parent="12" name="Balance">
-      <Position>4</Position>
-      <DataType>double precision|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="38" parent="12" name="CloseDate">
-      <Position>5</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="39" parent="12" name="DailyIn">
-      <Position>6</Position>
-      <DataType>double precision|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="40" parent="12" name="DailyOut">
-      <Position>7</Position>
-      <DataType>double precision|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="41" parent="12" name="DateCreated">
-      <Position>8</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="42" parent="12" name="Descriminator">
-      <Position>9</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="43" parent="12" name="IsActive">
-      <Position>10</Position>
-      <DataType>boolean|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="44" parent="12" name="IsJoint">
-      <Position>11</Position>
-      <DataType>boolean|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="45" parent="12" name="SortCode">
-      <Position>12</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="46" parent="12" name="OverDraft">
-      <Position>13</Position>
-      <DataType>double precision|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="47" parent="12" name="MonthlyCount">
-      <Position>14</Position>
-      <DataType>integer|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <index id="48" parent="12" name="PK_Accounts">
-      <ObjectId>18709</ObjectId>
-      <ColNames>Id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="49" parent="12" name="IX_Accounts_AccountName">
-      <ObjectId>18786</ObjectId>
-      <ColNames>AccountName</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <key id="50" parent="12" name="PK_Accounts">
-      <ObjectId>18710</ObjectId>
-      <ColNames>Id</ColNames>
-      <UnderlyingIndexName>PK_Accounts</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <column id="51" parent="13" name="Id">
-      <Position>1</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="52" parent="13" name="AddressToString">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="53" parent="13" name="County">
-      <Position>3</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="54" parent="13" name="DateCreated">
-      <Position>4</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="55" parent="13" name="DateUpdated">
-      <Position>5</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="56" parent="13" name="HouseNumber">
-      <Position>6</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="57" parent="13" name="PostCode">
-      <Position>7</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="58" parent="13" name="Street">
-      <Position>8</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="59" parent="13" name="Town">
-      <Position>9</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <index id="60" parent="13" name="PK_Addresses">
-      <ObjectId>18717</ObjectId>
-      <ColNames>Id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="61" parent="13" name="IX_Addresses_PostCode">
-      <ObjectId>18789</ObjectId>
-      <ColNames>PostCode</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <key id="62" parent="13" name="PK_Addresses">
-      <ObjectId>18718</ObjectId>
-      <ColNames>Id</ColNames>
-      <UnderlyingIndexName>PK_Addresses</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <column id="63" parent="14" name="Id">
+    <column id="19" parent="11" name="Id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
       <DefaultExpression>nextval(&apos;&quot;AspNetRoleClaims_Id_seq&quot;&apos;::regclass)</DefaultExpression>
     </column>
-    <column id="64" parent="14" name="ClaimType">
+    <column id="20" parent="11" name="ClaimType">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="65" parent="14" name="ClaimValue">
+    <column id="21" parent="11" name="ClaimValue">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="66" parent="14" name="RoleId">
+    <column id="22" parent="11" name="RoleId">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <index id="67" parent="14" name="PK_AspNetRoleClaims">
+    <index id="23" parent="11" name="PK_AspNetRoleClaims">
       <ObjectId>18575</ObjectId>
       <ColNames>Id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="68" parent="14" name="IX_AspNetRoleClaims_RoleId">
+    <index id="24" parent="11" name="IX_AspNetRoleClaims_RoleId">
       <ObjectId>18603</ObjectId>
       <ColNames>RoleId</ColNames>
     </index>
-    <key id="69" parent="14" name="PK_AspNetRoleClaims">
+    <key id="25" parent="11" name="PK_AspNetRoleClaims">
       <ObjectId>18576</ObjectId>
       <ColNames>Id</ColNames>
       <UnderlyingIndexName>PK_AspNetRoleClaims</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="70" parent="14" name="FK_AspNetRoleClaims_AspNetRoles_RoleId">
+    <foreign-key id="26" parent="11" name="FK_AspNetRoleClaims_AspNetRoles_RoleId">
       <ObjectId>18577</ObjectId>
       <ColNames>RoleId</ColNames>
       <RefTableName>AspNetRoles</RefTableName>
       <RefKeyName>PK_AspNetRoles</RefKeyName>
       <RefColNames>Id</RefColNames>
     </foreign-key>
-    <column id="71" parent="15" name="Id">
+    <column id="27" parent="12" name="Id">
       <Position>1</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="72" parent="15" name="ConcurrencyStamp">
+    <column id="28" parent="12" name="ConcurrencyStamp">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="73" parent="15" name="Name">
+    <column id="29" parent="12" name="Name">
       <Position>3</Position>
       <DataType>varchar(256)|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="74" parent="15" name="NormalizedName">
+    <column id="30" parent="12" name="NormalizedName">
       <Position>4</Position>
       <DataType>varchar(256)|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <index id="75" parent="15" name="PK_AspNetRoles">
+    <index id="31" parent="12" name="PK_AspNetRoles">
       <ObjectId>18527</ObjectId>
       <ColNames>Id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="76" parent="15" name="RoleNameIndex">
+    <index id="32" parent="12" name="RoleNameIndex">
       <ObjectId>18602</ObjectId>
       <ColNames>NormalizedName</ColNames>
     </index>
-    <key id="77" parent="15" name="PK_AspNetRoles">
+    <key id="33" parent="12" name="PK_AspNetRoles">
       <ObjectId>18528</ObjectId>
       <ColNames>Id</ColNames>
       <UnderlyingIndexName>PK_AspNetRoles</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="78" parent="16" name="Id">
+    <column id="34" parent="13" name="Id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
       <DefaultExpression>nextval(&apos;&quot;AspNetUserClaims_Id_seq&quot;&apos;::regclass)</DefaultExpression>
     </column>
-    <column id="79" parent="16" name="ClaimType">
+    <column id="35" parent="13" name="ClaimType">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="80" parent="16" name="ClaimValue">
+    <column id="36" parent="13" name="ClaimValue">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="81" parent="16" name="UserId">
+    <column id="37" parent="13" name="UserId">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <index id="82" parent="16" name="PK_AspNetUserClaims">
+    <index id="38" parent="13" name="PK_AspNetUserClaims">
       <ObjectId>18546</ObjectId>
       <ColNames>Id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="83" parent="16" name="IX_AspNetUserClaims_UserId">
+    <index id="39" parent="13" name="IX_AspNetUserClaims_UserId">
       <ObjectId>18604</ObjectId>
       <ColNames>UserId</ColNames>
     </index>
-    <key id="84" parent="16" name="PK_AspNetUserClaims">
+    <key id="40" parent="13" name="PK_AspNetUserClaims">
       <ObjectId>18547</ObjectId>
       <ColNames>Id</ColNames>
       <UnderlyingIndexName>PK_AspNetUserClaims</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="85" parent="16" name="FK_AspNetUserClaims_AspNetUsers_UserId">
+    <foreign-key id="41" parent="13" name="FK_AspNetUserClaims_AspNetUsers_UserId">
       <ObjectId>18548</ObjectId>
       <ColNames>UserId</ColNames>
       <RefTableName>AspNetUsers</RefTableName>
       <RefKeyName>PK_AspNetUsers</RefKeyName>
       <RefColNames>Id</RefColNames>
     </foreign-key>
-    <column id="86" parent="17" name="LoginProvider">
+    <column id="42" parent="14" name="LoginProvider">
       <Position>1</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="87" parent="17" name="ProviderKey">
+    <column id="43" parent="14" name="ProviderKey">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="88" parent="17" name="ProviderDisplayName">
+    <column id="44" parent="14" name="ProviderDisplayName">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="89" parent="17" name="UserId">
+    <column id="45" parent="14" name="UserId">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <index id="90" parent="17" name="PK_AspNetUserLogins">
+    <index id="46" parent="14" name="PK_AspNetUserLogins">
       <ObjectId>18559</ObjectId>
       <ColNames>LoginProvider
 ProviderKey</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="91" parent="17" name="IX_AspNetUserLogins_UserId">
+    <index id="47" parent="14" name="IX_AspNetUserLogins_UserId">
       <ObjectId>18605</ObjectId>
       <ColNames>UserId</ColNames>
     </index>
-    <key id="92" parent="17" name="PK_AspNetUserLogins">
+    <key id="48" parent="14" name="PK_AspNetUserLogins">
       <ObjectId>18560</ObjectId>
       <ColNames>LoginProvider
 ProviderKey</ColNames>
       <UnderlyingIndexName>PK_AspNetUserLogins</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="93" parent="17" name="FK_AspNetUserLogins_AspNetUsers_UserId">
+    <foreign-key id="49" parent="14" name="FK_AspNetUserLogins_AspNetUsers_UserId">
       <ObjectId>18561</ObjectId>
       <ColNames>UserId</ColNames>
       <RefTableName>AspNetUsers</RefTableName>
       <RefKeyName>PK_AspNetUsers</RefKeyName>
       <RefColNames>Id</RefColNames>
     </foreign-key>
-    <column id="94" parent="18" name="UserId">
+    <column id="50" parent="15" name="UserId">
       <Position>1</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="95" parent="18" name="RoleId">
+    <column id="51" parent="15" name="RoleId">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <index id="96" parent="18" name="PK_AspNetUserRoles">
+    <index id="52" parent="15" name="PK_AspNetUserRoles">
       <ObjectId>18588</ObjectId>
       <ColNames>UserId
 RoleId</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="97" parent="18" name="IX_AspNetUserRoles_RoleId">
+    <index id="53" parent="15" name="IX_AspNetUserRoles_RoleId">
       <ObjectId>18606</ObjectId>
       <ColNames>RoleId</ColNames>
     </index>
-    <key id="98" parent="18" name="PK_AspNetUserRoles">
+    <key id="54" parent="15" name="PK_AspNetUserRoles">
       <ObjectId>18589</ObjectId>
       <ColNames>UserId
 RoleId</ColNames>
       <UnderlyingIndexName>PK_AspNetUserRoles</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="99" parent="18" name="FK_AspNetUserRoles_AspNetUsers_UserId">
+    <foreign-key id="55" parent="15" name="FK_AspNetUserRoles_AspNetUsers_UserId">
       <ObjectId>18595</ObjectId>
       <ColNames>UserId</ColNames>
       <RefTableName>AspNetUsers</RefTableName>
       <RefKeyName>PK_AspNetUsers</RefKeyName>
       <RefColNames>Id</RefColNames>
     </foreign-key>
-    <foreign-key id="100" parent="18" name="FK_AspNetUserRoles_AspNetRoles_RoleId">
+    <foreign-key id="56" parent="15" name="FK_AspNetUserRoles_AspNetRoles_RoleId">
       <ObjectId>18590</ObjectId>
       <ColNames>RoleId</ColNames>
       <RefTableName>AspNetRoles</RefTableName>
       <RefKeyName>PK_AspNetRoles</RefKeyName>
       <RefColNames>Id</RefColNames>
     </foreign-key>
-    <column id="101" parent="19" name="UserId">
+    <column id="57" parent="16" name="UserId">
       <Position>1</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="102" parent="19" name="LoginProvider">
+    <column id="58" parent="16" name="LoginProvider">
       <Position>2</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="103" parent="19" name="Name">
+    <column id="59" parent="16" name="Name">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="104" parent="19" name="Value">
+    <column id="60" parent="16" name="Value">
       <Position>4</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <index id="105" parent="19" name="PK_AspNetUserTokens">
+    <index id="61" parent="16" name="PK_AspNetUserTokens">
       <ObjectId>18535</ObjectId>
       <ColNames>UserId
 LoginProvider
 Name</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="106" parent="19" name="PK_AspNetUserTokens">
+    <key id="62" parent="16" name="PK_AspNetUserTokens">
       <ObjectId>18536</ObjectId>
       <ColNames>UserId
 LoginProvider
@@ -566,386 +325,125 @@ Name</ColNames>
       <UnderlyingIndexName>PK_AspNetUserTokens</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="107" parent="20" name="Id">
+    <column id="63" parent="17" name="Id">
       <Position>1</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="108" parent="20" name="AccessFailedCount">
+    <column id="64" parent="17" name="AccessFailedCount">
       <Position>2</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="109" parent="20" name="ConcurrencyStamp">
+    <column id="65" parent="17" name="ConcurrencyStamp">
       <Position>3</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="110" parent="20" name="Email">
+    <column id="66" parent="17" name="Email">
       <Position>4</Position>
       <DataType>varchar(256)|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="111" parent="20" name="EmailConfirmed">
+    <column id="67" parent="17" name="EmailConfirmed">
       <Position>5</Position>
       <DataType>boolean|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="112" parent="20" name="LockoutEnabled">
+    <column id="68" parent="17" name="LockoutEnabled">
       <Position>6</Position>
       <DataType>boolean|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="113" parent="20" name="LockoutEnd">
+    <column id="69" parent="17" name="LockoutEnd">
       <Position>7</Position>
       <DataType>timestamp with time zone|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="114" parent="20" name="NormalizedEmail">
+    <column id="70" parent="17" name="NormalizedEmail">
       <Position>8</Position>
       <DataType>varchar(256)|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="115" parent="20" name="NormalizedUserName">
+    <column id="71" parent="17" name="NormalizedUserName">
       <Position>9</Position>
       <DataType>varchar(256)|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="116" parent="20" name="PasswordHash">
+    <column id="72" parent="17" name="PasswordHash">
       <Position>10</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="117" parent="20" name="PhoneNumber">
+    <column id="73" parent="17" name="PhoneNumber">
       <Position>11</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="118" parent="20" name="PhoneNumberConfirmed">
+    <column id="74" parent="17" name="PhoneNumberConfirmed">
       <Position>12</Position>
       <DataType>boolean|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="119" parent="20" name="SecurityStamp">
+    <column id="75" parent="17" name="SecurityStamp">
       <Position>13</Position>
       <DataType>text|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="120" parent="20" name="TwoFactorEnabled">
+    <column id="76" parent="17" name="TwoFactorEnabled">
       <Position>14</Position>
       <DataType>boolean|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1955</StateNumber>
     </column>
-    <column id="121" parent="20" name="UserName">
+    <column id="77" parent="17" name="UserName">
       <Position>15</Position>
       <DataType>varchar(256)|0</DataType>
       <StateNumber>1955</StateNumber>
     </column>
-    <index id="122" parent="20" name="PK_AspNetUsers">
+    <index id="78" parent="17" name="PK_AspNetUsers">
       <ObjectId>18519</ObjectId>
       <ColNames>Id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="123" parent="20" name="UserNameIndex">
+    <index id="79" parent="17" name="UserNameIndex">
       <ObjectId>18601</ObjectId>
       <ColNames>NormalizedUserName</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="124" parent="20" name="EmailIndex">
+    <index id="80" parent="17" name="EmailIndex">
       <ObjectId>18600</ObjectId>
       <ColNames>NormalizedEmail</ColNames>
     </index>
-    <key id="125" parent="20" name="PK_AspNetUsers">
+    <key id="81" parent="17" name="PK_AspNetUsers">
       <ObjectId>18520</ObjectId>
       <ColNames>Id</ColNames>
       <UnderlyingIndexName>PK_AspNetUsers</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="126" parent="21" name="Id">
-      <Position>1</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="127" parent="21" name="AddressId">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="128" parent="21" name="BranchName">
-      <Position>3</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="129" parent="21" name="SortCode">
-      <Position>4</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <index id="130" parent="21" name="PK_BankBranches">
-      <ObjectId>18725</ObjectId>
-      <ColNames>Id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="131" parent="21" name="IX_BankBranches_BranchName">
-      <ObjectId>18791</ObjectId>
-      <ColNames>BranchName</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="132" parent="21" name="IX_BankBranches_AddressId">
-      <ObjectId>18790</ObjectId>
-      <ColNames>AddressId</ColNames>
-    </index>
-    <key id="133" parent="21" name="PK_BankBranches">
-      <ObjectId>18726</ObjectId>
-      <ColNames>Id</ColNames>
-      <UnderlyingIndexName>PK_BankBranches</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="134" parent="21" name="FK_BankBranches_Addresses_AddressId">
-      <ObjectId>18727</ObjectId>
-      <ColNames>AddressId</ColNames>
-      <RefTableName>Addresses</RefTableName>
-      <RefKeyName>PK_Addresses</RefKeyName>
-      <RefColNames>Id</RefColNames>
-    </foreign-key>
-    <column id="135" parent="22" name="Id">
-      <Position>1</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="136" parent="22" name="AddressId">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="137" parent="22" name="BankBranchId">
-      <Position>3</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="138" parent="22" name="DateCreated">
-      <Position>4</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="139" parent="22" name="DateOfBirth">
-      <Position>5</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="140" parent="22" name="DateUpdated">
-      <Position>6</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="141" parent="22" name="Descriminator">
-      <Position>7</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="142" parent="22" name="Email">
-      <Position>8</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="143" parent="22" name="FirstName">
-      <Position>9</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="144" parent="22" name="LastName">
-      <Position>10</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="145" parent="22" name="MaidenName">
-      <Position>11</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="146" parent="22" name="MarritalStatus">
-      <Position>12</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="147" parent="22" name="MiddleName">
-      <Position>13</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="148" parent="22" name="Sex">
-      <Position>14</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="149" parent="22" name="CustomerCount">
-      <Position>15</Position>
-      <DataType>integer|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="150" parent="22" name="HireDate">
-      <Position>16</Position>
-      <DataType>timestamp|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="151" parent="22" name="BankerId">
-      <Position>17</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <index id="152" parent="22" name="PK_Persons">
-      <ObjectId>18738</ObjectId>
-      <ColNames>Id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="153" parent="22" name="IX_Persons_Email">
-      <ObjectId>18794</ObjectId>
-      <ColNames>Email</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="154" parent="22" name="IX_Persons_AddressId">
-      <ObjectId>18792</ObjectId>
-      <ColNames>AddressId</ColNames>
-    </index>
-    <index id="155" parent="22" name="IX_Persons_BankBranchId">
-      <ObjectId>18793</ObjectId>
-      <ColNames>BankBranchId</ColNames>
-    </index>
-    <key id="156" parent="22" name="PK_Persons">
-      <ObjectId>18739</ObjectId>
-      <ColNames>Id</ColNames>
-      <UnderlyingIndexName>PK_Persons</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="157" parent="22" name="FK_Persons_Addresses_AddressId">
-      <ObjectId>18740</ObjectId>
-      <ColNames>AddressId</ColNames>
-      <RefTableName>Addresses</RefTableName>
-      <RefKeyName>PK_Addresses</RefKeyName>
-      <RefColNames>Id</RefColNames>
-    </foreign-key>
-    <foreign-key id="158" parent="22" name="FK_Persons_BankBranches_BankBranchId">
-      <ObjectId>18745</ObjectId>
-      <ColNames>BankBranchId</ColNames>
-      <RefTableName>BankBranches</RefTableName>
-      <RefKeyName>PK_BankBranches</RefKeyName>
-      <RefColNames>Id</RefColNames>
-    </foreign-key>
-    <column id="159" parent="23" name="Id">
-      <Position>1</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="160" parent="23" name="AccountId">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="161" parent="23" name="Amount">
-      <Position>3</Position>
-      <DataType>double precision|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="162" parent="23" name="DateCreated">
-      <Position>4</Position>
-      <DataType>timestamp|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="163" parent="23" name="Description">
-      <Position>5</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="164" parent="23" name="From">
-      <Position>6</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="165" parent="23" name="PersonId">
-      <Position>7</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <column id="166" parent="23" name="Type">
-      <Position>8</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>1977</StateNumber>
-    </column>
-    <index id="167" parent="23" name="PK_Transactions">
-      <ObjectId>18774</ObjectId>
-      <ColNames>Id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="168" parent="23" name="IX_Transactions_AccountId">
-      <ObjectId>18795</ObjectId>
-      <ColNames>AccountId</ColNames>
-    </index>
-    <index id="169" parent="23" name="IX_Transactions_PersonId">
-      <ObjectId>18796</ObjectId>
-      <ColNames>PersonId</ColNames>
-    </index>
-    <key id="170" parent="23" name="PK_Transactions">
-      <ObjectId>18775</ObjectId>
-      <ColNames>Id</ColNames>
-      <UnderlyingIndexName>PK_Transactions</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="171" parent="23" name="FK_Transactions_Accounts_AccountId">
-      <ObjectId>18776</ObjectId>
-      <ColNames>AccountId</ColNames>
-      <RefTableName>Accounts</RefTableName>
-      <RefKeyName>PK_Accounts</RefKeyName>
-      <RefColNames>Id</RefColNames>
-    </foreign-key>
-    <foreign-key id="172" parent="23" name="FK_Transactions_Persons_PersonId">
-      <ObjectId>18781</ObjectId>
-      <ColNames>PersonId</ColNames>
-      <RefTableName>Persons</RefTableName>
-      <RefKeyName>PK_Persons</RefKeyName>
-      <RefColNames>Id</RefColNames>
-    </foreign-key>
-    <column id="173" parent="24" name="MigrationId">
+    <column id="82" parent="18" name="MigrationId">
       <Position>1</Position>
       <DataType>varchar(150)|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1947</StateNumber>
     </column>
-    <column id="174" parent="24" name="ProductVersion">
+    <column id="83" parent="18" name="ProductVersion">
       <Position>2</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>1947</StateNumber>
     </column>
-    <index id="175" parent="24" name="PK___EFMigrationsHistory">
+    <index id="84" parent="18" name="PK___EFMigrationsHistory">
       <ObjectId>18408</ObjectId>
       <ColNames>MigrationId</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="176" parent="24" name="PK___EFMigrationsHistory">
+    <key id="85" parent="18" name="PK___EFMigrationsHistory">
       <ObjectId>18409</ObjectId>
       <ColNames>MigrationId</ColNames>
       <UnderlyingIndexName>PK___EFMigrationsHistory</UnderlyingIndexName>
