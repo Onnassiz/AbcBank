@@ -81,6 +81,8 @@ namespace AbcBank.Migrations.MyDb
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AddressToString");
+
                     b.Property<string>("County")
                         .IsRequired();
 
@@ -96,8 +98,6 @@ namespace AbcBank.Migrations.MyDb
 
                     b.Property<string>("Street")
                         .IsRequired();
-
-                    b.Property<string>("ToString");
 
                     b.Property<string>("Town")
                         .IsRequired();

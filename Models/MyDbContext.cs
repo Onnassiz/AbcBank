@@ -11,7 +11,7 @@ namespace AbcBank.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"Server=127.0.0.1;Database=abc_bank;User Id=postgres;Password=;");
+            optionsBuilder.UseNpgsql(@"Server=127.0.0.1;Database=abc_bank;User Id=postgres;Password=postgres;");
         }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<BankBranch> BankBranches { get; set; }

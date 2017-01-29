@@ -112,14 +112,14 @@ namespace AbcBank.Controllers
 
         public IActionResult Address(string Id)
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             return View(_context.Persons.Find(Id));
         }
 
         [HttpPost]
         public IActionResult Address(Customer customer, string Id)
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
 
             var person = _context.Persons.OfType<Customer>().FirstOrDefault(x => x.Id == Id);
             var BankBranchId = person.BankBranchId;
@@ -231,7 +231,7 @@ namespace AbcBank.Controllers
         {
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
             ViewBag.Branch = Branch;
 
@@ -243,7 +243,7 @@ namespace AbcBank.Controllers
         {
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
 
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
 
@@ -262,7 +262,7 @@ namespace AbcBank.Controllers
             return View();
         }
 
-        public IActionResult View(string Id)
+        public IActionResult ViewItem(string Id)
         {
             var result = _context.Persons.OfType<Customer>()
                 .Join(_context.BankBranches,
@@ -282,7 +282,7 @@ namespace AbcBank.Controllers
                 LastName = result.person.person.LastName,
                 DateOfBirth = result.person.person.DateOfBirth,
                 Age = result.person.person.Age,
-                Address = result.address.ToString
+                Address = result.address.AddressToString
             };
 
             ViewBag.Banker = _context.Persons.Find(_context.Persons.OfType<Customer>().FirstOrDefault(x => x.Id == Id).BankerId).FullName;

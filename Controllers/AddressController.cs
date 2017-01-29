@@ -35,11 +35,11 @@ namespace AbcBank.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ToString = address.HouseNumber + " " + address.Street + ", " + address.Town + ", " +
+                var AddressToString = address.HouseNumber + " " + address.Street + ", " + address.Town + ", " +
                                address.County + ", " + address.PostCode + ".";
                 address.DateCreated = DateTime.Now;
                 address.DateUpdated = DateTime.Now;
-                address.ToString = ToString;
+                address.AddressToString = AddressToString;
                 _context.Addresses.Add(address);
                 _context.SaveChanges();
 
@@ -87,13 +87,13 @@ namespace AbcBank.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ToString = address.HouseNumber + " " + address.Street + ", " + address.Town + ", " +
+                var AddressToString = address.HouseNumber + " " + address.Street + ", " + address.Town + ", " +
                                address.County + ", " + address.PostCode + ".";
                 address.DateUpdated = DateTime.Now;
-                address.ToString = ToString;
+                address.AddressToString = AddressToString;
                 _context.Entry(address).State = EntityState.Modified;
                 _context.SaveChanges();
-                TempData["Response"] = "Address update is sucessful";
+                TempData["Response"] = "Address update is successful";
                 return RedirectToAction("Index");
             }
             return View();

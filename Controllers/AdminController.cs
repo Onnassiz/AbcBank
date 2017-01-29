@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace AbcBank.Controllers
 {
@@ -35,7 +34,7 @@ namespace AbcBank.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var result = _context.Persons.OfType<Administrator>().Join(_context.BankBranches,
                     x => x.BankBranchId, d => d.Id,
@@ -99,14 +98,14 @@ namespace AbcBank.Controllers
         [HttpGet]
         public IActionResult Address(string Id)
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             return View(_context.Persons.Find(Id));
         }
 
         [HttpPost]
         public IActionResult Address(Administrator administrator, string Id)
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
 
             var person = _context.Persons.Find(Id);
             person.AddressId = administrator.AddressId;
@@ -136,7 +135,7 @@ namespace AbcBank.Controllers
         {
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
             ViewBag.Branch = Branch;
             return View(_context.Persons.Find(Id));
@@ -147,7 +146,7 @@ namespace AbcBank.Controllers
         {
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
 
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
 
@@ -164,7 +163,7 @@ namespace AbcBank.Controllers
             return View();
         }
 
-        public IActionResult View(string Id)
+        public IActionResult ViewItem(string Id)
         {
             var result = _context.Persons.OfType<Administrator>()
                 .Join(_context.BankBranches,
@@ -184,7 +183,7 @@ namespace AbcBank.Controllers
                 LastName = result.person.person.LastName,
                 DateOfBirth = result.person.person.DateOfBirth,
                 Age = result.person.person.Age,
-                Address = result.address.ToString
+                Address = result.address.AddressToString
             };
             return View(model);
         }

@@ -26,7 +26,7 @@ namespace AbcBank.Controllers
                         bankBranch.Id,
                         bankBranch.SortCode,
                         BankBranch = bankBranch.BranchName,
-                        BankAddress = address.ToString
+                        BankAddress = address.AddressToString
                     }
             );
 
@@ -48,14 +48,14 @@ namespace AbcBank.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(BankBranch bankBranch)
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             if (ModelState.IsValid)
             {
                 bankBranch.BranchName = "Abc Bank - " + bankBranch.BranchName;
@@ -79,14 +79,14 @@ namespace AbcBank.Controllers
         [HttpGet]
         public IActionResult Edit(string Id)
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             return View(_context.BankBranches.Find(Id));
         }
 
         [HttpPost]
         public IActionResult Edit(BankBranch bankBranch, string Id)
         {
-            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "ToString");
+            ViewBag.Address = new SelectList(_context.Addresses.ToList(), "Id", "AddressToString");
             if (ModelState.IsValid)
             {
                 _context.Entry(bankBranch).State = EntityState.Modified;

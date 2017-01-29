@@ -270,44 +270,9 @@ namespace AbcBank.Controllers
         }
 
         //
-        // GET: /Account/ForgotPassword
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
 
         //
         // POST: /Account/ForgotPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    TempData["Response"] = "Please check your email to reset your password.";
-                    return RedirectToAction("ForgotPassword");
-                }
-
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                // Send an email with this link
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                Mailer.Send(model.Email, "Reset Password",
-                $"Please your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                TempData["Response"] = "Please check your email.";
-                return RedirectToAction("ForgotPassword");
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
 
         //
         // GET: /Account/ForgotPasswordConfirmation
@@ -317,7 +282,6 @@ namespace AbcBank.Controllers
         {
             return View();
         }
-
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
@@ -330,7 +294,7 @@ namespace AbcBank.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> CreatePassword(string userId, string code = null)
+        public IActionResult CreatePassword(string userId, string code = null)
         {
             ViewBag.Email = _context.Users.Find(userId).Email;
             return code == null ? View("Error") : View();

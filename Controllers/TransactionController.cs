@@ -26,7 +26,7 @@ namespace AbcBank.Controllers
             return View(model);
         }
 
-        public IActionResult View(string Id)
+        public IActionResult ViewItem(string Id)
         {
             var item = _context.Transactions.Join(_context.Accounts, x => x.AccountId, j => j.Id,
                 (transaction, account) => new {transaction, account}

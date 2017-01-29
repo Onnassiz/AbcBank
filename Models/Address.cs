@@ -24,7 +24,7 @@ namespace AbcBank.Models
         [PostCodeUnique]
         public string PostCode { get; set; }
 
-        public string ToString { get; set; }
+        public string AddressToString { get; set; }
 
         [Required]
         public DateTime DateCreated { get; set; }

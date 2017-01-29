@@ -84,7 +84,7 @@ namespace AbcBank.Controllers
                     MarritalStatus = result.person.person.MarritalStatus,
                     DateOfBirth = result.person.person.DateOfBirth,
                     Age = result.person.person.Age,
-                    Address = result.address.ToString,
+                    Address = result.address.AddressToString,
                     Role = Role
                 };
                 return View(model);
