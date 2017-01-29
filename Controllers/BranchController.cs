@@ -23,10 +23,7 @@ namespace AbcBank.Controllers
             var result = _context.BankBranches.Join(_context.Addresses, e => e.AddressId, d => d.Id,
                     (bankBranch, address) => new
                     {
-                        bankBranch.Id,
-                        bankBranch.SortCode,
-                        BankBranch = bankBranch.BranchName,
-                        BankAddress = address.AddressToString
+                        bankBranch, address
                     }
             );
 
@@ -36,10 +33,10 @@ namespace AbcBank.Controllers
             {
                 model.Add(new BranchIndexPage()
                 {
-                    Id = item.Id,
-                    Branch = item.BankBranch,
-                    SortCode = item.SortCode,
-                    Address = item.BankAddress
+                    Id = item.bankBranch.Id,
+                    Branch = item.bankBranch.BranchName,
+                    SortCode = item.bankBranch.SortCode,
+                    Address = item.address.AddressToString
                 });
             }
             return View(model);
