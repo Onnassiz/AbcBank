@@ -8,7 +8,7 @@ using AbcBank.Models;
 namespace AbcBank.Migrations.MyDb
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20170129101515_AllDatabaseEntities")]
+    [Migration("20170129100421_AllDatabaseEntities")]
     partial class AllDatabaseEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
