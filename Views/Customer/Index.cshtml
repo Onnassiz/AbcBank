@@ -7,8 +7,15 @@
 <h2>Customer Enrollment and Management</h2><hr/>
 
 <p>
-  <a href="/Customer/Create"><i class="fa fa-plus"></i> Add New Customers</a>
+    <a href="/Customer/Create"><i class="fa fa-plus"></i> Add New Customers</a>
 </p>
+
+@if (User.IsInRole("Banker"))
+{
+    <p>
+        <a href="/Customer/Index/@ViewBag.BankId"><i class="fa fa-arrow-circle-o-right"></i> @ViewBag.BranchName Customers</a>
+    </p>
+}
 
 @if (TempData["Response"] != null)
 {

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AbcBank.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,12 @@ namespace AbcBank.Controllers
     public class AbcAccountController:Controller
     {
         private readonly MyDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AbcAccountController(MyDbContext context)
+        public AbcAccountController(MyDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -44,11 +48,21 @@ namespace AbcBank.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewBag.AccountType = new List<string> {"Current", "Savings"};
             var Branch = new SelectList(_context.BankBranches.ToList(), "SortCode", "BranchName");
             ViewBag.Branch = Branch;
+
+            if (User.IsInRole("Banker"))
+            {
+                var CurrentUser = await GetUser();
+                var BankId = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).BankBranchId;
+                List<SelectListItem> AdminBranch = new List<SelectListItem>();
+                var branch = _context.BankBranches.Find(BankId);
+                AdminBranch.Add(new SelectListItem{Text = branch.BranchName, Value = branch.SortCode, Selected = true});
+                ViewBag.Branch = AdminBranch;
+            }
 
             return View();
         }
@@ -276,6 +290,11 @@ namespace AbcBank.Controllers
             _context.SaveChanges();
             TempData["Response"] = "Account closed.";
             return RedirectToAction("Settings", new {id = Id});
+        }
+
+        public Task<ApplicationUser> GetUser()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }

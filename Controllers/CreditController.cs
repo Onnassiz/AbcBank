@@ -42,7 +42,7 @@ namespace AbcBank.Controllers
 
         public IActionResult Target(string Id, string From, string Amount)
         {
-            var abcAccountController = new AbcAccountController(_context);
+            var abcAccountController = new AbcAccountController(_context, _userManager);
             ViewBag.Holders = abcAccountController.GetHolders(Id);
             if (Amount != null && From != null )
             {

@@ -36,26 +36,53 @@ namespace AbcBank.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string Id)
         {
-            var result = _context.Persons.OfType<Customer>()
-                .Join(_context.BankBranches,
-                    x => x.BankBranchId, d => d.Id,
-                    (person, branch) => new
-                    {
-                        person,
-                        branch
-                    }
-                )
-                .Join(_context.Persons,
-                    x => x.person.BankerId, d => d.Id,
-                    (person, admin) => new
-                    {
-                        person,
-                        admin
-                    }
-                )
-                .OrderByDescending(x => x.person.person.DateUpdated);
+            if (User.IsInRole("Banker"))
+            {
+                var CurrentUser = await GetUser();
+                var BankId = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).BankBranchId;
+                ViewBag.BranchName = _context.BankBranches.Find(BankId).BranchName;
+                ViewBag.BankId = BankId;
+            }
+            var result = Id == null
+                ? _context.Persons.OfType<Customer>()
+                    .Join(_context.BankBranches,
+                        x => x.BankBranchId, d => d.Id,
+                        (person, branch) => new
+                        {
+                            person,
+                            branch
+                        }
+                    )
+                    .Join(_context.Persons,
+                        x => x.person.BankerId, d => d.Id,
+                        (person, admin) => new
+                        {
+                            person,
+                            admin
+                        }
+                    )
+                    .OrderByDescending(x => x.person.person.DateUpdated)
+                : _context.Persons.OfType<Customer>()
+                    .Join(_context.BankBranches,
+                        x => x.BankBranchId, d => d.Id,
+                        (person, branch) => new
+                        {
+                            person,
+                            branch
+                        }
+                    )
+                    .Join(_context.Persons,
+                        x => x.person.BankerId, d => d.Id,
+                        (person, admin) => new
+                        {
+                            person,
+                            admin
+                        }
+                    )
+                    .Where(x => x.person.branch.Id == Id)
+                    .OrderByDescending(x => x.person.person.DateUpdated);
 
             List<PersonJoinView> model = new List<PersonJoinView>();
 
@@ -76,13 +103,20 @@ namespace AbcBank.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewBag.Sex = new List<string> {"Male", "Female"};
             ViewBag.MarritalStatus = new List<string> {"Single", "Married", "Divorced"};
             var Branch = new SelectList(_context.BankBranches.ToList(), "Id", "BranchName");
             ViewBag.Branch = Branch;
-
+            if (User.IsInRole("Banker"))
+            {
+                var CurrentUser = await GetUser();
+                var BankId = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).BankBranchId;
+                List<SelectListItem> AdminBranch = new List<SelectListItem>();
+                AdminBranch.Add(new SelectListItem{Text = _context.BankBranches.Find(BankId).BranchName, Value = BankId, Selected = true});
+                ViewBag.Branch = AdminBranch;
+            }
             return View();
         }
 
@@ -287,6 +321,11 @@ namespace AbcBank.Controllers
 
             ViewBag.Banker = _context.Persons.Find(_context.Persons.OfType<Customer>().FirstOrDefault(x => x.Id == Id).BankerId).FullName;
             return View(model);
+        }
+
+        public Task<ApplicationUser> GetUser()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }

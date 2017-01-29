@@ -56,7 +56,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.SortCode, "Sort Code:", new { @class = "col-md-3 control-label" })
+        @Html.LabelFor(m => m.SortCode, "Branch:", new { @class = "col-md-3 control-label" })
         <div class="col-md-9">
             @Html.DropDownList("SortCode", (IEnumerable<SelectListItem>)ViewBag.Branch)
             @Html.ValidationMessageFor(m => m.SortCode, "", new {@class = "text-danger"})

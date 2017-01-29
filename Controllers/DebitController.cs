@@ -55,7 +55,7 @@ namespace AbcBank.Controllers
                 TempData["Error"] = "The value you supplied is out of format";
                 return RedirectToAction("Target", new {id = Id});
             }
-            var abcAccountController = new AbcAccountController(_context);
+            var abcAccountController = new AbcAccountController(_context, _userManager);
             ViewBag.Holders = abcAccountController.GetHolders(Id);
             return View(_context.Accounts.Find(Id));
         }
