@@ -1,0 +1,78 @@
+﻿@model Card
+
+@{
+    ViewBag.Title = "Add Card";
+}
+
+<h2>Add Card to Account</h2><hr/>
+
+<p>
+    <a href="/Card"><i class="fa  fa-arrow-circle-left"></i> Cards</a>
+</p>
+
+@using (Html.BeginForm("Create", "Card", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form" }))
+{
+    <h3>Add Card</h3><hr/>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardName, "Card Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.CardName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CardName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardNumber, "Card Number:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control", @readonly = "readonly" })
+            <span class="col-md-5 help-block"><a href="#" class="generateCardNumber">Generate Card Number</a></span><br/>
+            <br/>@Html.ValidationMessageFor(m => m.CardNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardPin, "Card Pin:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.CardPin, new { @class = "form-control", maxlength = "4" })
+            @Html.ValidationMessageFor(m => m.CardPin, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AccountId, "Account Name:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.DropDownList("AccountId", (IEnumerable<SelectListItem>)ViewBag.Account)
+            @Html.ValidationMessageFor(m => m.AccountId, "", new {@class = "text-danger"})
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-6 col-md-2">
+            <input type="submit" value="Add" class="btn btn-default form-control"/>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function() {
+                $(".generateCardNumber").click(
+                    function() {
+                        var accountNumber = "504216";
+                        var rand = Math.floor(Math.random() * 40) + 10;
+                        accountNumber = accountNumber + rand;
+                        var rand = Math.floor(Math.random() * 40) + 10;
+                        accountNumber = accountNumber + rand;
+                        var rand = Math.floor(Math.random() * 40) + 10;
+                        accountNumber = accountNumber + rand;
+                        $('#CardNumber').val(accountNumber);
+                    }
+                );
+            }
+        );
+    </script>
+}

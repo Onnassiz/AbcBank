@@ -48,7 +48,7 @@ namespace AbcBank.Migrations.MyDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountName")
+                    b.HasIndex("AccountNumber")
                         .IsUnique();
 
                     b.ToTable("Accounts");
@@ -131,6 +131,33 @@ namespace AbcBank.Migrations.MyDb
                         .IsUnique();
 
                     b.ToTable("BankBranches");
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Card", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountId")
+                        .IsRequired();
+
+                    b.Property<string>("CardName")
+                        .IsRequired();
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired();
+
+                    b.Property<string>("CardPin")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CardNumber")
+                        .IsUnique();
+
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("AbcBank.Models.Person", b =>
@@ -278,6 +305,14 @@ namespace AbcBank.Migrations.MyDb
                     b.HasOne("AbcBank.Models.Address", "Address")
                         .WithMany("BankBranches")
                         .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AbcBank.Models.Card", b =>
+                {
+                    b.HasOne("AbcBank.Models.Account", "Account")
+                        .WithMany("Cards")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

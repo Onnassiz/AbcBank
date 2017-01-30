@@ -55,13 +55,27 @@ namespace AbcBank
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddJsonOptions(jsonOptions=>
+                {
+                    jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
+
             services.AddSession();
+
 //            services.AddMemoryCache();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:5000").AllowAnyHeader().AllowCredentials());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,6 +106,9 @@ namespace AbcBank
 
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
+
+            app.UseCors("AllowSpecificOrigin");
+
 
             app.UseMvc(routes =>
             {

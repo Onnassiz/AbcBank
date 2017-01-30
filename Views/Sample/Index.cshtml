@@ -1,0 +1,35 @@
+﻿<br/>
+<br/>
+<br/>
+<button class="btn btn-primary" id="clickme">Click me</button>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function() {
+                var products = { Name: "Text Editor" }
+                var data = {
+                    Name: 'Test',
+                };
+
+                $('#clickme').click(function() {
+                    $.ajax({
+                        url: 'http://localhost:5002/Sample/Test',
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        data: {Name: "sejeje"},
+                        dataType: "json",
+                        success: function(data) {
+                            alert("Product name: " + data);
+                        },
+                        error: function(data) {
+                            alert("Something went wrong");;
+                        }
+                    });
+
+                });
+            }
+        );
+    </script>
+}

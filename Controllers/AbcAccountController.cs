@@ -184,8 +184,8 @@ namespace AbcBank.Controllers
             ViewBag.AccountName = account.AccountName;
             ViewBag.AccountNumber = account.AccountNumber;
 
-            var BranchId = _context.BankBranches.FirstOrDefault(x => x.SortCode == account.SortCode).Id;
-            ViewBag.Persons = new SelectList(_context.Persons.Where(x => x.BankBranchId == BranchId && x.Descriminator == "Customer"), "Id", "FullName");
+//            var BranchId = _context.BankBranches.FirstOrDefault(x => x.SortCode == account.SortCode).Id;
+            ViewBag.Persons = new SelectList(_context.Persons.Where(x => x.Descriminator == "Customer"), "Id", "FullName");
 
             return View();
         }

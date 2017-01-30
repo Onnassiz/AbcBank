@@ -28,6 +28,10 @@ namespace AbcBank.Models
             get { return 300; }
         }
 
+        public string AccountNameAndNumber {
+            get { return AccountName + " - " + AccountNumber; }
+        }
+
         public double DailyIn { get; set; }
 
         public double DailyOut { get; set; }
@@ -47,5 +51,7 @@ namespace AbcBank.Models
         public List<AccountHolder> AccountHolders { get; set; }
 
         public List<Transaction> Transactions { get; set; }
+
+        public List<Card> Cards { get; set; }
     }
 }

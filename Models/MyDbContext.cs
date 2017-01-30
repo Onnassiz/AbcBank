@@ -19,6 +19,7 @@ namespace AbcBank.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountHolder> AccountHolders { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Card> Cards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,10 @@ namespace AbcBank.Models
             modelBuilder.Entity<BankBranch>()
                 .HasOne(p => p.Address)
                 .WithMany(p => p.BankBranches)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Card>()
+                .HasOne(p => p.Account)
+                .WithMany(p => p.Cards)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.Address)
@@ -54,10 +59,12 @@ namespace AbcBank.Models
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<BankBranch>()
                 .HasIndex(b => b.BranchName).IsUnique();
+            modelBuilder.Entity<Card>()
+                .HasIndex(b => b.CardNumber).IsUnique();
             modelBuilder.Entity<Person>()
                 .HasIndex(b => b.Email).IsUnique();
             modelBuilder.Entity<Account>()
-                .HasIndex(b => b.AccountName).IsUnique();
+                .HasIndex(b => b.AccountNumber).IsUnique();
             modelBuilder.Entity<BankBranch>()
                 .HasIndex(b => b.BranchName).IsUnique();
             modelBuilder.Entity<Person>()
