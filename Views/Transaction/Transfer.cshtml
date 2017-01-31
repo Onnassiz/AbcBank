@@ -13,7 +13,14 @@
 }
 
 <p>
-    <a href="/Transaction"><i class="fa  fa-arrow-circle-left"></i> Transactions</a>
+    @if (User.IsInRole("Customer"))
+    {
+        <a href="/Transaction/Customer"><i class="fa  fa-arrow-circle-left"></i> Transactions</a>
+    }
+    else
+    {
+        <a href="/Transaction"><i class="fa  fa-arrow-circle-left"></i> Transactions</a>
+    }
 </p><hr/>
 
 <div class="container">

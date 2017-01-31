@@ -17,17 +17,23 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="col-md-6">
-            <div class="login-form" style="padding-bottom: 31%">
-              <div class="col-md-8 intro-divider">
-                <h4>Have your account in your pocket and manage it with one click.</h4>
+              <div class="login-form" style="padding-bottom: 31%">
+                  @if (TempData["Response"] != null)
+                  {
+                      <div class="alert alert-danger">
+                          @TempData["Response"].ToString()
+                      </div>
+                  }
+                  <div class="col-md-8 intro-divider">
+                      <h4>Have your account in your pocket and manage it with one click.</h4>
+                  </div>
+                  <div class="col-md-8 intro-divider">
+                      <h4>Create an account with us and enjoy our limitless benefits.</h4>
+                  </div>
+                  @*              <div class="col-md-8 intro-divider">*@
+                  @*                <h4>Already have an Account with us? @Html.ActionLink("Login", "Login", "Account") to manage your account.</h4>*@
+                  @*              </div>*@
               </div>
-              <div class="col-md-8 intro-divider">
-                <h4>Create an account with us and enjoy our limitless benefits.</h4>
-              </div>
-@*              <div class="col-md-8 intro-divider">*@
-@*                <h4>Already have an Account with us? @Html.ActionLink("Login", "Login", "Account") to manage your account.</h4>*@
-@*              </div>*@
-            </div>
           </div>
         </div>
       </div>

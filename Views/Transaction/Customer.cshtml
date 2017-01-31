@@ -4,6 +4,26 @@
     ViewBag.Title = "Transactions";
 }
 <h2>Select Account</h2><hr/>
+@if (TempData["Response"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Response"].ToString()
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"].ToString()
+    </div>
+}
+
+@if (TempData["ResponseTransfer"] != null)
+{
+    <div class="alert alert-success">
+        Tranfer operation was successfull click <a href="@TempData["ResponseTransfer"]">here</a> to veiw your transaction details.
+    </div>
+}
 
 @foreach (var item in Model)
 {

@@ -107,14 +107,13 @@ namespace AbcBank.Controllers
                 Receiver = receiver.AccountName,
                 ReceiverAccountNumber = receiver.AccountNumber
             };
-
             return View(model);
         }
+
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Customer()
         {
             var CurrentUser = await GetUser();
-
             var Id = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).Id;
 
             var result = _context.AccountHolders.Join(_context.Accounts, c => c.AccountId, d => d.Id,

@@ -51,6 +51,7 @@ namespace AbcBank.Controllers
             {
                 await _signInManager.SignOutAsync();
                 _logger.LogInformation(4, "User logged out.");
+                TempData["Response"] = "You do not have any account with us. Contact Bank Admin";
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 

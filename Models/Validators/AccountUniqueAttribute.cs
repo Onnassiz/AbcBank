@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 
 namespace AbcBank.Models
 {
@@ -23,11 +24,27 @@ namespace AbcBank.Models
         {
             if (value != null)
             {
+                var idField = validationContext.ObjectInstance.GetType().GetProperty("Id");
+                var id = idField.GetValue(validationContext.ObjectInstance, null);
                 var context = new MyDbContext();
-                if (context.Accounts.Any(x => x.AccountNumber == value.ToString()))
+                if (id != null)
                 {
-                    return new ValidationResult(
-                        FormatErrorMessage(validationContext.DisplayName));
+                    if (context.Accounts.Find(id).AccountNumber != value.ToString())
+                    {
+                        if (context.Accounts.Any(x => x.AccountNumber == value.ToString()))
+                        {
+                            return new ValidationResult(
+                                FormatErrorMessage(validationContext.DisplayName));
+                        }
+                    }
+                }
+                else
+                {
+                    if (context.Accounts.Any(x => x.AccountNumber == "Abc Bank - " + value.ToString()))
+                    {
+                        return new ValidationResult(
+                            FormatErrorMessage(validationContext.DisplayName));
+                    }
                 }
             }
             return ValidationResult.Success;

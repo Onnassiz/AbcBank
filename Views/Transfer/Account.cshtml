@@ -1,0 +1,83 @@
+﻿@model Account
+
+@{
+    ViewBag.Title = "Transfer Credentials";
+}
+
+<h2>Transfer Operation</h2><hr/>
+<p>
+    <a href="/Transaction"><i class="fa fa-arrow-circle-left"></i> Transactions</a>
+</p>
+<h3 class="alert alert-warning">Ensure all credentails are correct before proceeding</h3>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"].ToString()
+    </div>
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<h3>Sender</h3>
+<hr class="intro-divider-full"/>
+<div class="form-group">
+    <div class="col-md-2"><b>Account Name:</b></div>
+    <div class="col-md-10">
+        @Model.AccountName
+    </div>
+</div><br/>
+<div class="form-group">
+    <div class="col-md-2"><b>Account Number:</b></div>
+    <div class="col-md-9">
+        @Model.AccountNumber
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-2"><b>Account Holder(s):</b></div>
+    <div class="col-md-9">
+        @if (ViewBag.Holders != null)
+        {
+            foreach (var item in ViewBag.Holders)
+            {
+                <span>@item</span><br/>
+            }
+        }
+    </div>
+</div><br/>
+
+<div class="form-group">
+    @Html.Label("", "", new { @class = "col-md-3 control-label" })
+    <div class="col-md-offset-2 col-md-9">
+        <h4>Sender's Balance is: <span style="color: #00CAFB"><span>&#163</span>@Model.Balance.ToString("F2")</span></h4>
+    </div>
+</div>
+
+
+<br/>
+<br/>
+<h3>Enter Receiver's Account Number</h3>
+<hr class="intro-divider-full"/>
+
+
+@using (Html.BeginForm("Account", "Transfer", FormMethod.Post, new { @class = "form-horizontal col-md-8", role = "form"}))
+{
+    <div class="form-group">
+        @Html.Label("Receiving Account", "Receiving Account:", new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBox("ReceivingAccount", null, new { @class = "form-control" })
+            @Html.TextBox("PrincipalAccount", Model.AccountNumber, new { @class = "form-control", type = "hidden" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-6 col-md-2">
+            <input type="submit" value="Transfer" class="btn btn-default form-control"/>
+        </div>
+    </div>
+}
+
+
+
+
+

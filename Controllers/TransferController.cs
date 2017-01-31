@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AbcBank.Controllers
 {
-    [Authorize(Roles = "Manager, Manager")]
+    [Authorize(Roles = "Manager, Banker, Customer")]
     public class TransferController : Controller
     {
         private MyDbContext _context;
@@ -20,6 +20,7 @@ namespace AbcBank.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Manager, Banker")]
         public IActionResult Index()
         {
             return View();
@@ -41,6 +42,41 @@ namespace AbcBank.Controllers
                 return RedirectToAction("FormatUrl", new {id = fromId, id2 = toId});
             }
             return View();
+        }
+
+        public async Task<IActionResult> Account(string Id)
+        {
+            if (User.IsInRole("Customer"))
+            {
+                var CurrentUser = await GetUser();
+                var personId = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).Id;
+                if (!HasThisAccount(personId, Id))
+                {
+                    TempData["Error"] = "Access Denied";
+                    return RedirectToAction("Customer", "Transaction");
+                }
+            }
+            var abcAccountController = new AbcAccountController(_context, _userManager);
+            ViewBag.Holders = abcAccountController.GetHolders(Id);
+            return View(_context.Accounts.Find(Id));
+        }
+
+        [HttpPost]
+        public IActionResult Account(Transfer transfer, string Id)
+        {
+            if (ModelState.IsValid)
+            {
+                var transactionController = new TransactionController(_context, _userManager);
+                var fromId = _context.Accounts.FirstOrDefault(x => x.AccountNumber == transfer.PrincipalAccount).Id;
+                var toId = _context.Accounts.FirstOrDefault(x => x.AccountNumber == transfer.ReceivingAccount).Id;
+                if (transactionController.IsSavings(fromId))
+                {
+                    ModelState.AddModelError(string.Empty, "Transfer operation is not allowed on savings account");
+                    return View();
+                }
+                return RedirectToAction("FormatUrl", new {id = fromId, id2 = toId});
+            }
+            return View(_context.Accounts.Find(Id));
         }
 
         public IActionResult FormatUrl(string Id, string Id2, string Amount)
@@ -77,6 +113,16 @@ namespace AbcBank.Controllers
             var debitController = new DebitController(_context, _userManager);
             var creditController = new CreditController(_context, _userManager);
             var transactionController = new TransactionController(_context, _userManager);
+            if (User.IsInRole("Customer"))
+            {
+                var CurrentUser = await GetUser();
+                var personId = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).Id;
+                if (!HasThisAccount(personId, Sender))
+                {
+                    TempData["Error"] = "Access Denied";
+                    return RedirectToAction("Customer", "Transaction");
+                }
+            }
             if (Amount > account.DailyLimit)
             {
                 TempData["Error"] = "Maximal transfet limit exceeded";
@@ -98,6 +144,11 @@ namespace AbcBank.Controllers
             var senderTransactionId = await AddTransaction( "Bank Transfer", Sender, "Debit", Amount);
             var receiverTransactionId = await AddTransaction( _context.Accounts.Find(Sender).AccountName, Sender, "Credit", Amount);
             TempData["ResponseTransfer"] = "/Transaction/Transfer/" + senderTransactionId + "/" + receiverTransactionId;
+
+            if (User.IsInRole("Customer"))
+            {
+                return RedirectToAction("Customer", "Transaction");
+            }
             return RedirectToAction("Index", "Transaction");
         }
 
@@ -118,6 +169,20 @@ namespace AbcBank.Controllers
             _context.Transactions.Add(transaction);
             _context.SaveChanges();
             return transaction.Id;
+        }
+
+        public Task<ApplicationUser> GetUser()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
+        }
+
+        public bool HasThisAccount(string personId, string accountId)
+        {
+            if (_context.AccountHolders.Any(x => x.AccountId == accountId && x.PersonId == personId))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
