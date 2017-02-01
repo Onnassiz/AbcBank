@@ -81,5 +81,6 @@ namespace AbcBank.Controllers
             TempData["Response"] = "Item Deleted";
             return RedirectToAction("Index");
         }
+
     }
 }
