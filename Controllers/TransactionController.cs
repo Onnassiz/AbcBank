@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbcBank.Models;
@@ -178,7 +179,10 @@ namespace AbcBank.Controllers
             var current = MyMethod(HttpContext);
             var response = new Dictionary<string, string>();
 
-            if (referrer != "")
+
+            var thisUrl = referrer.Contains(current);
+
+            if (!thisUrl)
             {
                 var card = _context.Cards.FirstOrDefault(x => x.Token == Id);
                 if (card != null)
@@ -191,7 +195,7 @@ namespace AbcBank.Controllers
                     return Json(JsonConvert.SerializeObject(response));
                 }
                 response.Add("status", "fail");
-                response.Add("token", "Sesion Expired.");
+                response.Add("token", "Session Expired");
                 return Json(JsonConvert.SerializeObject(response));
             }
             var balance = _context.Accounts.Find(Id).Balance.ToString("F2");

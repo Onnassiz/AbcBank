@@ -67,6 +67,8 @@ namespace AbcBank.Controllers
         {
             var transactionController = new TransactionController(_context, _userManager);
             var referrer = Request.Headers["Referer"].ToString();
+            var current = MyMethod(HttpContext);
+            var thisUrl = referrer.Contains(current);
             var response = new Dictionary<string, string>();
 
             if (transactionController.IsSavings(Id))
@@ -89,7 +91,7 @@ namespace AbcBank.Controllers
             {
                 if (!DebitCurrent(Id, Amount))
                 {
-                    if (referrer != "")
+                    if (thisUrl)
                     {
                         response.Add("status", "fail");
                         response.Add("token", "Insufficient Balance");
@@ -99,7 +101,7 @@ namespace AbcBank.Controllers
                     return RedirectToAction("Target", new {id = Id});
                 }
             }
-            if (referrer != "")
+            if (thisUrl)
             {
                 await AddExternalTransaction( From, Id, "Debit", Amount);
                 response.Add("status", "pass");
@@ -218,11 +220,13 @@ namespace AbcBank.Controllers
         public IActionResult GetExternalRequest(string Id, string Id2)
         {
             var referrer = Request.Headers["Referer"].ToString();
-            if (referrer != "")
+            var current = MyMethod(HttpContext);
+            var thisUrl = referrer.Contains(current);
+
+            if (!thisUrl)
             {
                 var response = new Dictionary<string, string>();
                 var card = _context.Cards.FirstOrDefault(x => x.Token == Id);
-
                 if (card != null)
                 {
                     var accountId = card.AccountId;
@@ -242,12 +246,11 @@ namespace AbcBank.Controllers
                             response.Add("token", "Daily withdrawal limit exceeded");
                             return Json(JsonConvert.SerializeObject(response));
                         }
-//                        card.Token = "";
-//                        _context.Cards.Update(card);
-//                        _context.SaveChanges();
+                        card.Token = "";
+                        _context.Cards.Update(card);
+                        _context.SaveChanges();
                         response.Add("status", "fail");
                         response.Add("token", _context.Accounts.Find(accountId).Balance.ToString());
-//                        return RedirectToAction("Sample");
                         return RedirectToAction("Task", new {id = accountId, amount = Number, from = "ATM Withdrawal"});
                     }
                     response.Add("status", "fail");
@@ -258,14 +261,10 @@ namespace AbcBank.Controllers
             return Json(JsonConvert.SerializeObject(""));
         }
 
-        [AllowAnonymous]
-        public async Task<IActionResult> Sample(string Id)
+        public string MyMethod(Microsoft.AspNetCore.Http.HttpContext context)
         {
-            var referrer = Request.Headers["Referer"].ToString();
-            var response = new Dictionary<string, string>();
-            response.Add("status", "fail");
-            response.Add("token", referrer);
-            return Json(JsonConvert.SerializeObject(response));
+            var host = $"{context.Request.Scheme}://{context.Request.Host}";
+            return host;
         }
     }
 }
