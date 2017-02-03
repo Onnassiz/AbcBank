@@ -25,6 +25,7 @@ namespace AbcBank.Controllers
 
         public IActionResult Index()
         {
+            //Return the list of all created accounts.
             var result = _context.Accounts.Join(_context.BankBranches, x => x.SortCode, y => y.SortCode,
                     (account, branch) => new {account, branch}
             ).OrderByDescending(x => x.account.DateCreated);
@@ -54,6 +55,8 @@ namespace AbcBank.Controllers
             var Branch = new SelectList(_context.BankBranches.ToList(), "SortCode", "BranchName");
             ViewBag.Branch = Branch;
 
+            //Restric the list of branches to 1 item if th user is an Admin
+            //This is to ensure that Administrators Create Account only for thier branch.
             if (User.IsInRole("Banker"))
             {
                 var CurrentUser = await GetUser();
@@ -110,10 +113,22 @@ namespace AbcBank.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(string Id)
+        public async Task<IActionResult> Edit(string Id)
         {
             var Branch = new SelectList(_context.BankBranches.ToList(), "SortCode", "BranchName");
             ViewBag.Branch = Branch;
+
+            //Restric the list of branches to 1 item if th user is an Admin
+            //This is to ensure that Administrators update Account only for thier branch.
+            if (User.IsInRole("Banker"))
+            {
+                var CurrentUser = await GetUser();
+                var BankId = _context.Persons.FirstOrDefault(x => x.Email == CurrentUser.Email).BankBranchId;
+                List<SelectListItem> AdminBranch = new List<SelectListItem>();
+                var branch = _context.BankBranches.Find(BankId);
+                AdminBranch.Add(new SelectListItem{Text = branch.BranchName, Value = branch.SortCode, Selected = true});
+                ViewBag.Branch = AdminBranch;
+            }
             return View(_context.Accounts.Find(Id));
         }
 
@@ -147,7 +162,7 @@ namespace AbcBank.Controllers
             {
                 ViewBag.MonthlyCount = savingsAcc.MonthlyCount;
             }
-
+            //Get all the holders tagged to an account and return it to the view
             ViewBag.Holders = GetHolders(Id);
 
             var result = _context.Accounts.Join(_context.BankBranches, x => x.SortCode, y => y.SortCode,
@@ -198,8 +213,9 @@ namespace AbcBank.Controllers
             {
                 if (IsJoint(Id))
                 {
-                    var holderCount = _context.AccountHolders.Where(x => x.AccountId == Id).Count();
+                    var holderCount = _context.AccountHolders.Count(x => x.AccountId == Id);
                     var account = new Account();
+                    //Ensure holders don't exceed limit
                     if (holderCount >= account.JointHolderLimit)
                     {
                         TempData["Error"] = "Holders' limit exceeded. More than 3 holders cannot be tagged to an account.";
@@ -235,7 +251,7 @@ namespace AbcBank.Controllers
 
         private bool HolderExist(string accountId, string personId)
         {
-            if (_context.AccountHolders.Where(x => x.AccountId == accountId && x.PersonId == personId).Any())
+            if (_context.AccountHolders.Any(x => x.AccountId == accountId && x.PersonId == personId))
             {
                 return true;
             }
@@ -244,7 +260,7 @@ namespace AbcBank.Controllers
 
         public bool HasHolder(string accountId)
         {
-            if (_context.AccountHolders.Where(x => x.AccountId == accountId).Any())
+            if (_context.AccountHolders.Any(x => x.AccountId == accountId))
             {
                 return true;
             }

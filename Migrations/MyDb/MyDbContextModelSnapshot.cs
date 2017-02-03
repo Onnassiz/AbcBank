@@ -150,6 +150,8 @@ namespace AbcBank.Migrations.MyDb
                     b.Property<string>("CardPin")
                         .IsRequired();
 
+                    b.Property<string>("Token");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");

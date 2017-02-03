@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbcBank.Models;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace AbcBank.Controllers
 {
@@ -60,9 +62,12 @@ namespace AbcBank.Controllers
             return View(_context.Accounts.Find(Id));
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Task(string Id, string From, double Amount)
         {
             var transactionController = new TransactionController(_context, _userManager);
+            var referrer = Request.Headers["Referer"].ToString();
+            var response = new Dictionary<string, string>();
 
             if (transactionController.IsSavings(Id))
             {
@@ -76,16 +81,31 @@ namespace AbcBank.Controllers
                     TempData["Error"] = "Insufficient Balance";
                     return RedirectToAction("Target", new {id = Id});
                 }
+                response.Add("status", "fail");
+                response.Add("token", "Sav Balance");
+                return Json(JsonConvert.SerializeObject(response));
             }
             else
             {
                 if (!DebitCurrent(Id, Amount))
                 {
+                    if (referrer != "")
+                    {
+                        response.Add("status", "fail");
+                        response.Add("token", "Insufficient Balance");
+                        return Json(JsonConvert.SerializeObject(response));
+                    }
                     TempData["Error"] = "Insufficient Balance";
                     return RedirectToAction("Target", new {id = Id});
                 }
             }
-
+            if (referrer != "")
+            {
+                await AddExternalTransaction( From, Id, "Debit", Amount);
+                response.Add("status", "pass");
+                response.Add("token", "Tansaction Complete. Please take your cash");
+                return Json(JsonConvert.SerializeObject(response));
+            }
             var transId = await AddTransaction( From, Id, "Debit", Amount);
             var href = "Transaction/View/" + transId;
             TempData["ResponseDebit"] = href;
@@ -155,6 +175,23 @@ namespace AbcBank.Controllers
             _context.SaveChanges();
             return transaction.Id;
         }
+        public async Task<string> AddExternalTransaction(string From, string AccountId, string Type, double Amount)
+        {
+            var personId = _context.AccountHolders.FirstOrDefault(x => x.AccountId == AccountId).PersonId;
+            Transaction transaction = new Transaction
+            {
+                DateCreated = DateTime.Now,
+                Type = Type,
+                Amount = Amount,
+                AccountId = AccountId,
+                PersonId = personId,
+                Description = "Account Debited by " + From,
+                From = From
+            };
+            _context.Transactions.Add(transaction);
+            _context.SaveChanges();
+            return transaction.Id;
+        }
 
         private bool OverMonthlyCount(string Id)
         {
@@ -175,6 +212,60 @@ namespace AbcBank.Controllers
         private bool HasOverdraft(string Id)
         {
             return _context.Accounts.Find(Id).Balance < 0;
+        }
+
+        [AllowAnonymous]
+        public IActionResult GetExternalRequest(string Id, string Id2)
+        {
+            var referrer = Request.Headers["Referer"].ToString();
+            if (referrer != "")
+            {
+                var response = new Dictionary<string, string>();
+                var card = _context.Cards.FirstOrDefault(x => x.Token == Id);
+
+                if (card != null)
+                {
+                    var accountId = card.AccountId;
+                    double Number;
+                    var parse = Double.TryParse(Id2, out Number);
+                    if (!_context.Accounts.Find(accountId).IsActive)
+                    {
+                        response.Add("status", "fail");
+                        response.Add("token", "Account is closed. Contact Admin");
+                        return Json(JsonConvert.SerializeObject(response));
+                    }
+                    if (parse)
+                    {
+                        if (ExceedsDailyLimit(accountId, Number))
+                        {
+                            response.Add("status", "fail");
+                            response.Add("token", "Daily withdrawal limit exceeded");
+                            return Json(JsonConvert.SerializeObject(response));
+                        }
+//                        card.Token = "";
+//                        _context.Cards.Update(card);
+//                        _context.SaveChanges();
+                        response.Add("status", "fail");
+                        response.Add("token", _context.Accounts.Find(accountId).Balance.ToString());
+//                        return RedirectToAction("Sample");
+                        return RedirectToAction("Task", new {id = accountId, amount = Number, from = "ATM Withdrawal"});
+                    }
+                    response.Add("status", "fail");
+                    response.Add("token", "Out of format.");
+                    return Json(JsonConvert.SerializeObject(response));
+                }
+            }
+            return Json(JsonConvert.SerializeObject(""));
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Sample(string Id)
+        {
+            var referrer = Request.Headers["Referer"].ToString();
+            var response = new Dictionary<string, string>();
+            response.Add("status", "fail");
+            response.Add("token", referrer);
+            return Json(JsonConvert.SerializeObject(response));
         }
     }
 }

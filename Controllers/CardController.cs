@@ -6,9 +6,12 @@ using AbcBank.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace AbcBank.Controllers
 {
+    [Authorize(Roles = "Manager, Banker")]
     public class CardController : Controller
     {
         private readonly MyDbContext _context;
@@ -82,5 +85,52 @@ namespace AbcBank.Controllers
             return RedirectToAction("Index");
         }
 
+        public string MyMethod(Microsoft.AspNetCore.Http.HttpContext context)
+        {
+            var host = $"{context.Request.Scheme}://{context.Request.Host}";
+            return host;
+        }
+
+        [AllowAnonymous]
+        public IActionResult Login(string CardNumber, string CardPin)
+        {
+            var referrer = Request.Headers["Referer"].ToString();
+            var current = MyMethod(HttpContext);
+            var response = new Dictionary<string, string>();
+
+            if (current != referrer)
+            {
+                if (!_context.Cards.Any(x => x.CardNumber == CardNumber && x.CardPin == ConvertStringtoMD5(CardPin)))
+                {
+                    response["status"] = "fail";
+                    response["token"] = "Invalid pin.";
+                    return Json(JsonConvert.SerializeObject(response));
+                }
+                var currentRequestToken = RandomStringToken();
+                var card = _context.Cards.FirstOrDefault(
+                    x => x.CardNumber == CardNumber && x.CardPin == ConvertStringtoMD5(CardPin));
+                card.Token = currentRequestToken;
+                _context.Cards.Update(card);
+                _context.SaveChanges();
+
+                response.Add("status", "pass");
+                response.Add("token", currentRequestToken);
+                return Json(JsonConvert.SerializeObject(response));
+            }
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+        public string RandomStringToken()
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var token =  new string(Enumerable.Repeat(chars, 64)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+            if (!_context.Cards.Any(x => x.Token == token))
+            {
+                return token;
+            }
+            return RandomStringToken();
+        }
     }
 }

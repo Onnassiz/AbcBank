@@ -5,6 +5,8 @@ using AbcBank.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AbcBank.Controllers
 {
@@ -13,8 +15,10 @@ namespace AbcBank.Controllers
     {
         private readonly MyDbContext _context;
         private UserManager<ApplicationUser> _userManager;
+        private SignInManager<ApplicationUser> _signInManager;
         public TransactionController(MyDbContext context, UserManager<ApplicationUser> userManager)
         {
+            SignInManager<ApplicationUser> signInManager;
             _userManager = userManager;
             _context = context;
         }
@@ -149,7 +153,8 @@ namespace AbcBank.Controllers
             ViewBag.Id = Id;
             ViewBag.AccountName = account.AccountName;
             ViewBag.AccountNumber = account.AccountNumber;
-            ViewBag.Balance = GetAccountBalance(Id);
+            var balance = GetAccountBalance(Id).Value;
+            ViewBag.Balance = balance;
 
             var model = Query(Id);
             return View(model);
@@ -166,9 +171,32 @@ namespace AbcBank.Controllers
             return false;
         }
 
-        public double GetAccountBalance(string Id)
+        [AllowAnonymous]
+        public JsonResult GetAccountBalance(string Id)
         {
-            return _context.Accounts.Find(Id).Balance;
+            var referrer = Request.Headers["Referer"].ToString();
+            var current = MyMethod(HttpContext);
+            var response = new Dictionary<string, string>();
+
+            if (referrer != "")
+            {
+                var card = _context.Cards.FirstOrDefault(x => x.Token == Id);
+                if (card != null)
+                {
+                    card.Token = "";
+                    _context.Cards.Update(card);
+                    _context.SaveChanges();
+                    response.Add("status", "pass");
+                    response.Add("token", _context.Accounts.Find(card.AccountId).Balance.ToString("F2"));
+                    return Json(JsonConvert.SerializeObject(response));
+                }
+                response.Add("status", "fail");
+                response.Add("token", "Sesion Expired.");
+                return Json(JsonConvert.SerializeObject(response));
+            }
+            var balance = _context.Accounts.Find(Id).Balance.ToString("F2");
+            var signIn = User.Identity.IsAuthenticated;
+            return signIn ? Json(balance) : Json("");
         }
 
         private List<TransactionJoinView> Query(string whereId = null)
@@ -205,6 +233,12 @@ namespace AbcBank.Controllers
             }
 
             return model;
+        }
+
+        public string MyMethod(Microsoft.AspNetCore.Http.HttpContext context)
+        {
+            var host = $"{context.Request.Scheme}://{context.Request.Host}";
+            return host;
         }
     }
 }

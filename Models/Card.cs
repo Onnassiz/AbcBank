@@ -16,6 +16,8 @@ namespace AbcBank.Models
         [Required]
         public string CardPin { get; set; }
 
+        public string Token { get; set; }
+
         [Required]
         public string AccountId { get; set; }
 

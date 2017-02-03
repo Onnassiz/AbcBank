@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TransactionJoinView>
+﻿@using Newtonsoft.Json.Linq
+@model IEnumerable<TransactionJoinView>
 
 @{
     ViewBag.Title = "Transactions";
@@ -6,7 +7,7 @@
 
 <h2>@ViewBag.AccountName - @ViewBag.AccountNumber</h2><hr/>
 
-<h3>Balance: <span style="color: #00CAFB"><span>&#163</span>@ViewBag.Balance.ToString("F2")</span></h3><hr/>
+<h3>Balance: <span style="color: #00CAFB"><span>&#163</span>@ViewBag.Balance</span></h3><hr/>
 
 @if (TempData["Response"] != null)
 {

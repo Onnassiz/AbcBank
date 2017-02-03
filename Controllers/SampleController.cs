@@ -4,6 +4,7 @@ using AbcBank.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AbcBank.Controllers
 {
@@ -31,9 +32,10 @@ namespace AbcBank.Controllers
             var current = MyMethod(HttpContext);
             Dictionary<string,string> response = new Dictionary<string, string>();
 
-            response["status"] = "pass";
+
+            response["status"] = "fail";
             response["token"] = "data";
-            return Json(response);
+            return Json(JsonConvert.SerializeObject(response));
         }
 
 

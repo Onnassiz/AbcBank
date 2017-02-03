@@ -108,8 +108,12 @@ namespace AbcBank.Controllers
             var User = await GetCurrentUserAsync();
             if (User.Email == "manager@abc.co.uk" && !_context.Persons.Any(x => x.Email == User.Email))
             {
-                IdentityRole roleName = new IdentityRole("Manager");
-                await _roleManager.CreateAsync(roleName);
+                var Manager = new IdentityRole("Manager");
+                await _roleManager.CreateAsync(Manager);
+                var Banker = new IdentityRole("Banker");
+                await _roleManager.CreateAsync(Banker);
+                var Customer = new IdentityRole("Customer");
+                await _roleManager.CreateAsync(Customer);
                 await _userManager.AddToRoleAsync(User, "Manager");
                 Administrator person = new Administrator
                 {
